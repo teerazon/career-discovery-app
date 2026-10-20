@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>แนะนำมหาวิทยาลัยและเกณฑ์คะแนน TCAS | Career Discovery Platform</title>
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container navbar">
+      <a href="../../index.html" class="logo-group">
+        <div class="logo-icon"><i class="fa-solid fa-compass"></i></div>
+        <div class="logo-text">
+          <span>CAREER PATH</span>
+          <span class="logo-sub">Discovery & Minigame</span>
+        </div>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="../../index.html" class="nav-link"><i class="fa-solid fa-house"></i> หน้าแรก</a></li>
+        <li><a href="../explore.html" class="nav-link"><i class="fa-solid fa-magnifying-glass"></i> สำรวจอาชีพ</a></li>
+        <li><a href="../minigames/index.html" class="nav-link"><i class="fa-solid fa-gamepad"></i> มินิเกมจำลอง (24h)</a></li>
+        <li><a href="faculties.html" class="nav-link"><i class="fa-solid fa-graduation-cap"></i> คณะและสาขา</a></li>
+        <li><a href="universities.html" class="nav-link active"><i class="fa-solid fa-building-columns"></i> มหาวิทยาลัย</a></li>
+        <li><a href="../profile.html" class="nav-link"><i class="fa-solid fa-user-astronaut"></i> โปรไฟล์</a></li>
+      </ul>
+
+      <div class="nav-auth-group">
+        <div id="navbar-auth-section"></div>
+        <button id="mobile-menu-toggle" class="mobile-toggle"><i class="fa-solid fa-bars"></i></button>
+      </div>
+    </div>
+  </header>
+
+  <main style="padding: 3.5rem 0 5rem;">
+    <div class="container">
+      
+      <div style="text-align: center; margin-bottom: 3rem;">
+        <span class="badge badge-cyan" style="margin-bottom: 0.75rem;">
+          <i class="fa-solid fa-landmark"></i> University Guide & TCAS Criteria
+        </span>
+        <h1 style="font-size: 2.3rem; margin-bottom: 0.75rem;">มหาวิทยาลัยชั้นนำและเกณฑ์การรับเข้า</h1>
+        <p style="color: var(--text-muted); max-width: 680px; margin: 0 auto;">
+          เปรียบเทียบจุดเด่น ค่าเล่าเรียน เกณฑ์คะแนน TCAS รอบ 1-3 และลิงก์ไปยังเว็บไซต์รับสมัครทางการโดยตรง
+        </p>
+      </div>
+
+      <!-- Universities Grid -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 2rem;" id="universities-grid">
+        <!-- Rendered by JavaScript -->
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Scripts -->
+  <script type="module" src="../../assets/js/utils/authCheck.js"></script>
+  <script type="module">
+    import { UNIVERSITIES_DATA } from '../../assets/js/services/dataService.js';
+
+    const grid = document.getElementById('universities-grid');
+
+    UNIVERSITIES_DATA.forEach(u => {
+      const card = document.createElement('div');
+      card.className = 'card card-interactive card-glowing';
+      card.style.display = 'flex';
+      card.style.flexDirection = 'column';
+
+      card.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem;">
+          <div>
+            <span class="badge badge-primary" style="margin-bottom: 0.35rem;">${u.province} • ${u.type}</span>
+            <h2 style="font-size: 1.35rem; margin-bottom: 2px;">${u.name}</h2>
+            <div style="font-size: 0.85rem; color: var(--text-dim);">${u.name_en}</div>
+          </div>
+          <div style="width: 44px; height: 44px; border-radius: 12px; background: rgba(255,255,255,0.06); color: ${u.badge_color}; display: flex; align-items: center; justify-content: center; font-size: 1.4rem;">
+            <i class="fa-solid fa-building-columns"></i>
+          </div>
+        </div>
+
+        <div style="background: rgba(255,255,255,0.02); border-left: 3px solid ${u.badge_color}; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: 0.85rem 1rem; margin-bottom: 1.25rem; font-size: 0.88rem; color: var(--text-main);">
+          <strong>จุดเด่น:</strong> ${u.highlights}
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 0.85rem; margin-bottom: 1.5rem; font-size: 0.88rem;">
+          <div>
+            <span style="color: var(--text-dim); display: block; font-size: 0.78rem; text-transform: uppercase;">เกณฑ์การรับเข้า (TCAS)</span>
+            <span style="color: var(--text-main); line-height: 1.5;">${u.tcas_criteria}</span>
+          </div>
+
+          <div>
+            <span style="color: var(--text-dim); display: block; font-size: 0.78rem; text-transform: uppercase;">ค่าธรรมเนียมการศึกษา</span>
+            <span style="color: var(--accent-emerald); font-weight: 700;">${u.tuition_fee}</span>
+          </div>
+
+          <div>
+            <span style="color: var(--text-dim); display: block; font-size: 0.78rem; text-transform: uppercase; margin-bottom: 4px;">คณะที่เปิดสอนยอดนิยม</span>
+            <div style="display: flex; gap: 4px; flex-wrap: wrap;">
+              ${u.faculties.map(f => `<span class="badge badge-cyan" style="font-size: 0.74rem;">${f}</span>`).join('')}
+            </div>
+          </div>
+        </div>
+
+        <a href="${u.website}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-block" style="margin-top: auto;">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> เข้าสู่เว็บไซต์ทางการของมหาวิทยาลัย
+        </a>
+      `;
+
+      grid.appendChild(card);
+    });
+  </script>
+</body>
+</html>

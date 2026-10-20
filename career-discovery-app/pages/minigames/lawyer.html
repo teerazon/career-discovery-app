@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>เกมจำลองทนายความ (Ace Attorney Simulation) | Career Discovery Platform</title>
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/games.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <div class="game-viewport">
+    <div class="game-container">
+      
+      <!-- Simulation HUD -->
+      <div class="game-hud">
+        <div class="hud-career-info">
+          <div class="hud-icon" style="background: linear-gradient(135deg, #f59e0b, #b45309);">
+            <i class="fa-solid fa-scale-balanced"></i>
+          </div>
+          <div class="hud-details">
+            <h2>ทนายความ (Lawyer & Counsel)</h2>
+            <p>Ace Attorney Courtroom Simulation</p>
+          </div>
+        </div>
+
+        <div class="hud-stats-group">
+          <div class="hud-stat-box">
+            <div class="hud-stat-label">ช่วงเวลา</div>
+            <div class="hud-stat-val" id="hud-time" style="font-size:1.05rem; color:#f59e0b;">09:30 น.</div>
+          </div>
+          <div class="hud-stat-box">
+            <div class="hud-stat-label">คะแนนสะสม</div>
+            <div class="hud-stat-val" id="hud-score" style="color:#ffffff;">0 / 100</div>
+          </div>
+          <a href="index.html" class="btn btn-ghost btn-sm" title="ออกจากการจำลอง" style="color:var(--text-dim);">
+            <i class="fa-solid fa-xmark"></i> ออก
+          </a>
+        </div>
+      </div>
+
+      <!-- 24-Hour Timeline Checkpoints -->
+      <div class="sim-timeline">
+        <div class="timeline-checkpoint active">
+          <div class="timeline-dot"></div>
+          <span>09:30 น. จับโกหกพยาน</span>
+        </div>
+        <div style="flex:1; height:2px; background:var(--border-subtle);"></div>
+        <div class="timeline-checkpoint">
+          <div class="timeline-dot"></div>
+          <span>13:30 น. Objection! คัดค้าน</span>
+        </div>
+        <div style="flex:1; height:2px; background:var(--border-subtle);"></div>
+        <div class="timeline-checkpoint">
+          <div class="timeline-dot"></div>
+          <span>15:30 น. แถลงการณ์ ป.วิ.อ.</span>
+        </div>
+      </div>
+
+      <!-- Interactive Stage Container -->
+      <div id="game-stage-container">
+        <!-- Rendered by lawyer.js -->
+      </div>
+
+    </div>
+  </div>
+
+  <script type="module">
+    import { initLawyerGame } from '../../assets/js/games/lawyer.js';
+    document.addEventListener('DOMContentLoaded', () => {
+      initLawyerGame();
+    });
+  </script>
+</body>
+</html>

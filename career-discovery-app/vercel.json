@@ -1,0 +1,38 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "version": 2,
+  "cleanUrls": false,
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/explore", "destination": "/pages/explore.html" },
+    { "source": "/minigames", "destination": "/pages/minigames/index.html" },
+    { "source": "/minigames/pharmacist", "destination": "/pages/minigames/pharmacist.html" },
+    { "source": "/minigames/lawyer", "destination": "/pages/minigames/lawyer.html" },
+    { "source": "/minigames/teacher", "destination": "/pages/minigames/teacher.html" },
+    { "source": "/minigames/accountant", "destination": "/pages/minigames/accountant.html" },
+    { "source": "/minigames/programmer", "destination": "/pages/minigames/programmer.html" },
+    { "source": "/profile", "destination": "/pages/profile.html" },
+    { "source": "/score-summary", "destination": "/pages/score-summary.html" },
+    { "source": "/faculties", "destination": "/pages/guidance/faculties.html" },
+    { "source": "/universities", "destination": "/pages/guidance/universities.html" },
+    { "source": "/login", "destination": "/pages/auth/login.html" },
+    { "source": "/register", "destination": "/pages/auth/register.html" }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
+        { "key": "X-XSS-Protection", "value": "1; mode=block" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+      ]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    }
+  ]
+}

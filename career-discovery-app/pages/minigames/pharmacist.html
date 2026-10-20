@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>เกมจำลองเภสัชกร (24h Simulation) | Career Discovery Platform</title>
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/games.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <!-- Game Viewport -->
+  <div class="game-viewport">
+    <div class="game-container">
+      
+      <!-- Simulation HUD -->
+      <div class="game-hud">
+        <div class="hud-career-info">
+          <div class="hud-icon" style="background: linear-gradient(135deg, #10b981, #059669);">
+            <i class="fa-solid fa-prescription-bottle-medical"></i>
+          </div>
+          <div class="hud-details">
+            <h2>เภสัชกร (Pharmacist)</h2>
+            <p>24-Hour Healthcare Simulation</p>
+          </div>
+        </div>
+
+        <div class="hud-stats-group">
+          <div class="hud-stat-box">
+            <div class="hud-stat-label">ช่วงเวลา</div>
+            <div class="hud-stat-val" id="hud-time" style="font-size:1.05rem; color:var(--accent-emerald);">08:30 น.</div>
+          </div>
+          <div class="hud-stat-box">
+            <div class="hud-stat-label">คะแนนสะสม</div>
+            <div class="hud-stat-val" id="hud-score" style="color:#ffffff;">0 / 100</div>
+          </div>
+          <a href="index.html" class="btn btn-ghost btn-sm" title="ออกจากการจำลอง" style="color:var(--text-dim);">
+            <i class="fa-solid fa-xmark"></i> ออก
+          </a>
+        </div>
+      </div>
+
+      <!-- 24-Hour Timeline Checkpoints -->
+      <div class="sim-timeline">
+        <div class="timeline-checkpoint active">
+          <div class="timeline-dot"></div>
+          <span>08:30 น. วินิจฉัย & แพ้ยา</span>
+        </div>
+        <div style="flex:1; height:2px; background:var(--border-subtle);"></div>
+        <div class="timeline-checkpoint">
+          <div class="timeline-dot"></div>
+          <span>11:30 น. ถาดนับเม็ดยา</span>
+        </div>
+        <div style="flex:1; height:2px; background:var(--border-subtle);"></div>
+        <div class="timeline-checkpoint">
+          <div class="timeline-dot"></div>
+          <span>15:00 น. ให้คำแนะนำยาเด็ก</span>
+        </div>
+      </div>
+
+      <!-- Interactive Stage Container -->
+      <div id="game-stage-container">
+        <!-- Rendered by pharmacist.js -->
+      </div>
+
+    </div>
+  </div>
+
+  <script type="module">
+    import { initPharmacistGame } from '../../assets/js/games/pharmacist.js';
+    document.addEventListener('DOMContentLoaded', () => {
+      initPharmacistGame();
+    });
+  </script>
+</body>
+</html>

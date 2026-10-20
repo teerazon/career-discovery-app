@@ -1,0 +1,45 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "version": 2,
+  "cleanUrls": false,
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/career-discovery-app/assets/(.*)", "destination": "/career-discovery-app/assets/$1" },
+    { "source": "/career-discovery-app/pages/(.*)", "destination": "/career-discovery-app/pages/$1" },
+    { "source": "/career-discovery-app/(.*)", "destination": "/career-discovery-app/$1" },
+    { "source": "/assets/(.*)", "destination": "/career-discovery-app/assets/$1" },
+    { "source": "/pages/(.*)", "destination": "/career-discovery-app/pages/$1" },
+    { "source": "/explore", "destination": "/career-discovery-app/pages/explore.html" },
+    { "source": "/minigames", "destination": "/career-discovery-app/pages/minigames/index.html" },
+    { "source": "/minigames/pharmacist", "destination": "/career-discovery-app/pages/minigames/pharmacist.html" },
+    { "source": "/minigames/lawyer", "destination": "/career-discovery-app/pages/minigames/lawyer.html" },
+    { "source": "/minigames/teacher", "destination": "/career-discovery-app/pages/minigames/teacher.html" },
+    { "source": "/minigames/accountant", "destination": "/career-discovery-app/pages/minigames/accountant.html" },
+    { "source": "/minigames/programmer", "destination": "/career-discovery-app/pages/minigames/programmer.html" },
+    { "source": "/profile", "destination": "/career-discovery-app/pages/profile.html" },
+    { "source": "/score-summary", "destination": "/career-discovery-app/pages/score-summary.html" },
+    { "source": "/faculties", "destination": "/career-discovery-app/pages/guidance/faculties.html" },
+    { "source": "/universities", "destination": "/career-discovery-app/pages/guidance/universities.html" },
+    { "source": "/login", "destination": "/career-discovery-app/pages/auth/login.html" },
+    { "source": "/register", "destination": "/career-discovery-app/pages/auth/register.html" },
+    { "source": "/", "destination": "/career-discovery-app/index.html" },
+    { "source": "/index.html", "destination": "/career-discovery-app/index.html" }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
+        { "key": "X-XSS-Protection", "value": "1; mode=block" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+      ]
+    },
+    {
+      "source": "/(.*)/assets/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    }
+  ]
+}

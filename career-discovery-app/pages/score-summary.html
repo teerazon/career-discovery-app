@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>สรุปผลคะแนนและประเมินทักษะ (Score Summary) | Career Discovery Platform</title>
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Confetti CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container navbar">
+      <a href="../index.html" class="logo-group">
+        <div class="logo-icon"><i class="fa-solid fa-compass"></i></div>
+        <div class="logo-text">
+          <span>CAREER PATH</span>
+          <span class="logo-sub">Discovery & Minigame</span>
+        </div>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="../index.html" class="nav-link"><i class="fa-solid fa-house"></i> หน้าแรก</a></li>
+        <li><a href="explore.html" class="nav-link"><i class="fa-solid fa-magnifying-glass"></i> สำรวจอาชีพ</a></li>
+        <li><a href="minigames/index.html" class="nav-link"><i class="fa-solid fa-gamepad"></i> มินิเกมจำลอง</a></li>
+        <li><a href="guidance/faculties.html" class="nav-link"><i class="fa-solid fa-graduation-cap"></i> คณะและสาขา</a></li>
+        <li><a href="profile.html" class="nav-link"><i class="fa-solid fa-user-astronaut"></i> โปรไฟล์</a></li>
+      </ul>
+
+      <div class="nav-auth-group">
+        <div id="navbar-auth-section"></div>
+      </div>
+    </div>
+  </header>
+
+  <main style="padding: 3rem 0 5rem;">
+    <div class="container container-narrow">
+      
+      <!-- Top Celebration Banner -->
+      <div class="card card-glowing animate-slide-up" style="text-align: center; margin-bottom: 2rem; padding: 2.5rem 2rem;">
+        <span class="badge badge-primary" style="margin-bottom: 0.75rem;">
+          <i class="fa-solid fa-trophy"></i> ผลการทดสอบ 24h Roleplay Simulation
+        </span>
+        <h1 id="summary-career-title" style="font-size: 2rem; margin-bottom: 0.5rem;">ผลการประเมินอาชีพ</h1>
+        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 2rem;">
+          ระบบได้ประมวลผลการตัดสินใจของคุณจาก 3 ช่วงเวลา เพื่อสะท้อนระดับความพร้อมของทักษะ 4 ด้าน
+        </p>
+
+        <!-- Big Score Box -->
+        <div style="display: flex; align-items: center; justify-content: center; gap: 2rem; flex-wrap: wrap;">
+          <div style="background: rgba(255,255,255,0.04); border: 2px solid var(--border-medium); border-radius: 24px; padding: 1.5rem 2.5rem; text-align: center; min-width: 180px;">
+            <div style="font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">คะแนนรวมของคุณ</div>
+            <div id="summary-total-score" style="font-size: 3.5rem; font-weight: 800; color: #ffffff; line-height: 1;">88</div>
+            <div style="font-size: 0.85rem; color: var(--text-dim);">เต็ม 100 คะแนน</div>
+          </div>
+
+          <div style="text-align: left;">
+            <div style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.25rem;">เกรดผลการประเมิน:</div>
+            <div id="summary-grade-badge" class="badge badge-emerald" style="font-size: 1.25rem; padding: 0.4rem 1.2rem;">
+              Grade A (ยอดเยี่ยม)
+            </div>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.5rem; max-width: 280px;">
+              คุณมีคุณลักษณะและความถนัดที่สอดคล้องกับวิชาชีพนี้ในระดับสูงมาก
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4 Skills Breakdown Radar & Bars -->
+      <div class="card animate-slide-up" style="margin-bottom: 2rem;">
+        <h2 style="font-size: 1.35rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 10px;">
+          <i class="fa-solid fa-chart-radar" style="color: var(--primary-light);"></i> วิเคราะห์สมรรถนะ 4 ทักษะหลัก (Skills Breakdown)
+        </h2>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center;" id="skills-analysis-row">
+          <!-- Chart.js Radar -->
+          <div style="max-width: 320px; margin: 0 auto; width: 100%;">
+            <canvas id="skillsRadarChart"></canvas>
+          </div>
+
+          <!-- Progress Bars List -->
+          <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+            <div>
+              <div style="display: flex; justify-content: space-between; font-size: 0.9rem; font-weight: 600; margin-bottom: 0.4rem;">
+                <span><i class="fa-solid fa-brain" style="color: var(--primary-light);"></i> คิดวิเคราะห์ (Analytical)</span>
+                <span id="skill-val-analytical">85%</span>
+              </div>
+              <div class="progress-container">
+                <div class="progress-bar" id="skill-bar-analytical" style="width: 85%;"></div>
+              </div>
+            </div>
+
+            <div>
+              <div style="display: flex; justify-content: space-between; font-size: 0.9rem; font-weight: 600; margin-bottom: 0.4rem;">
+                <span><i class="fa-solid fa-puzzle-piece" style="color: var(--accent-cyan);"></i> แก้ปัญหา (Problem Solving)</span>
+                <span id="skill-val-problem">90%</span>
+              </div>
+              <div class="progress-container">
+                <div class="progress-bar" id="skill-bar-problem" style="width: 90%; background: linear-gradient(90deg, #06b6d4, #0284c7);"></div>
+              </div>
+            </div>
+
+            <div>
+              <div style="display: flex; justify-content: space-between; font-size: 0.9rem; font-weight: 600; margin-bottom: 0.4rem;">
+                <span><i class="fa-solid fa-comments" style="color: var(--accent-purple);"></i> การสื่อสาร (Communication)</span>
+                <span id="skill-val-comm">80%</span>
+              </div>
+              <div class="progress-container">
+                <div class="progress-bar" id="skill-bar-comm" style="width: 80%; background: linear-gradient(90deg, #8b5cf6, #a855f7);"></div>
+              </div>
+            </div>
+
+            <div>
+              <div style="display: flex; justify-content: space-between; font-size: 0.9rem; font-weight: 600; margin-bottom: 0.4rem;">
+                <span><i class="fa-solid fa-shield-check" style="color: var(--accent-emerald);"></i> ความรอบคอบ (Thoroughness)</span>
+                <span id="skill-val-thorough">95%</span>
+              </div>
+              <div class="progress-container">
+                <div class="progress-bar progress-bar-emerald" id="skill-bar-thorough" style="width: 95%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Strengths and Areas to Improve -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem;">
+        <!-- Strengths Card -->
+        <div class="card animate-slide-up" style="border-top: 4px solid var(--accent-emerald);">
+          <h3 style="font-size: 1.15rem; margin-bottom: 1rem; color: #34d399; display: flex; align-items: center; gap: 8px;">
+            <i class="fa-solid fa-circle-check"></i> จุดแข็งของคุณ (Strengths)
+          </h3>
+          <ul id="strengths-list" style="font-size: 0.9rem; color: var(--text-muted); display: flex; flex-direction: column; gap: 0.75rem; padding-left: 1.25rem;">
+            <!-- Populated by JS -->
+          </ul>
+        </div>
+
+        <!-- Areas to Improve Card -->
+        <div class="card animate-slide-up" style="border-top: 4px solid var(--accent-amber);">
+          <h3 style="font-size: 1.15rem; margin-bottom: 1rem; color: #fbbf24; display: flex; align-items: center; gap: 8px;">
+            <i class="fa-solid fa-lightbulb"></i> จุดที่ควรพัฒนา (Areas to Improve)
+          </h3>
+          <ul id="improve-list" style="font-size: 0.9rem; color: var(--text-muted); display: flex; flex-direction: column; gap: 0.75rem; padding-left: 1.25rem;">
+            <!-- Populated by JS -->
+          </ul>
+        </div>
+      </div>
+
+      <!-- Detailed Answers Breakdown -->
+      <div class="card animate-slide-up" style="margin-bottom: 2.5rem;">
+        <h3 style="font-size: 1.2rem; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 8px;">
+          <i class="fa-solid fa-list-check"></i> เฉลยและคำอธิบายเชิงลึกรายสถานการณ์ (Detailed Feedback)
+        </h3>
+        <div id="detailed-answers-container" style="display: flex; flex-direction: column; gap: 1rem;">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <button id="replay-btn" class="btn btn-primary btn-lg">
+          <i class="fa-solid fa-rotate-right"></i> เล่นรอบจำลองนี้ซ้ำ
+        </button>
+        <a href="guidance/faculties.html" class="btn btn-secondary btn-lg">
+          <i class="fa-solid fa-graduation-cap"></i> ดูคณะและสาขาวิชาที่เกี่ยวข้อง
+        </a>
+        <a href="profile.html" class="btn btn-accent btn-lg">
+          <i class="fa-solid fa-user-astronaut"></i> ดูโปรไฟล์และสถิติสะสม
+        </a>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Scripts -->
+  <script type="module" src="../assets/js/utils/authCheck.js"></script>
+  <script type="module">
+    import { gameService } from '../assets/js/services/gameService.js';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const log = gameService.getLatestScore();
+      if (!log) return;
+
+      // Populate titles and scores
+      document.getElementById('summary-career-title').textContent = `ผลการประเมิน: ${log.career_name || 'มินิเกมจำลองอาชีพ'}`;
+      document.getElementById('summary-total-score').textContent = log.total_score || 85;
+
+      // Set grade
+      const score = log.total_score || 85;
+      const gradeEl = document.getElementById('summary-grade-badge');
+      if (score >= 90) {
+        gradeEl.className = 'badge badge-emerald';
+        gradeEl.textContent = 'Grade S (เชี่ยวชาญระดับสูง)';
+      } else if (score >= 80) {
+        gradeEl.className = 'badge badge-primary';
+        gradeEl.textContent = 'Grade A (ยอดเยี่ยม)';
+      } else if (score >= 65) {
+        gradeEl.className = 'badge badge-amber';
+        gradeEl.textContent = 'Grade B (ผ่านเกณฑ์ดี)';
+      } else {
+        gradeEl.className = 'badge badge-rose';
+        gradeEl.textContent = 'Grade C (ควรฝึกฝนเพิ่มเติม)';
+      }
+
+      // Fire celebratory confetti if high score
+      if (score >= 80 && window.confetti) {
+        confetti({ particleCount: 120, spread: 80, origin: { y: 0.5 } });
+      }
+
+      // Update skill values & bars
+      const skills = {
+        analytical: log.skills_analytical || 80,
+        problem: log.skills_problem_solving || 85,
+        comm: log.skills_communication || 75,
+        thorough: log.skills_thoroughness || 90
+      };
+
+      document.getElementById('skill-val-analytical').textContent = `${skills.analytical}%`;
+      document.getElementById('skill-bar-analytical').style.width = `${skills.analytical}%`;
+
+      document.getElementById('skill-val-problem').textContent = `${skills.problem}%`;
+      document.getElementById('skill-bar-problem').style.width = `${skills.problem}%`;
+
+      document.getElementById('skill-val-comm').textContent = `${skills.comm}%`;
+      document.getElementById('skill-bar-comm').style.width = `${skills.comm}%`;
+
+      document.getElementById('skill-val-thorough').textContent = `${skills.thorough}%`;
+      document.getElementById('skill-bar-thorough').style.width = `${skills.thorough}%`;
+
+      // Render Chart.js Radar Chart
+      const radarCanvas = document.getElementById('skillsRadarChart');
+      if (radarCanvas && window.Chart) {
+        new Chart(radarCanvas, {
+          type: 'radar',
+          data: {
+            labels: ['คิดวิเคราะห์', 'แก้ปัญหา', 'การสื่อสาร', 'ความรอบคอบ'],
+            datasets: [{
+              label: 'ระดับทักษะที่แสดงออก (%)',
+              data: [skills.analytical, skills.problem, skills.comm, skills.thorough],
+              fill: true,
+              backgroundColor: 'rgba(99, 102, 241, 0.25)',
+              borderColor: '#818cf8',
+              pointBackgroundColor: '#6366f1',
+              pointBorderColor: '#fff',
+              pointHoverBackgroundColor: '#fff',
+              pointHoverBorderColor: '#6366f1'
+            }]
+          },
+          options: {
+            scales: {
+              r: {
+                min: 0,
+                max: 100,
+                ticks: { display: false, stepSize: 25 },
+                grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
+                pointLabels: {
+                  color: '#94a3b8',
+                  font: { family: 'Prompt', size: 12 }
+                }
+              }
+            },
+            plugins: {
+              legend: { display: false }
+            }
+          }
+        });
+      }
+
+      // Strengths
+      const strengthsList = document.getElementById('strengths-list');
+      strengthsList.innerHTML = '';
+      const strengths = log.strengths?.length ? log.strengths : ['มีความใส่ใจในรายละเอียดและขั้นตอนการปฏิบัติงาน'];
+      strengths.forEach(s => {
+        const li = document.createElement('li');
+        li.textContent = s;
+        strengthsList.appendChild(li);
+      });
+
+      // Areas to improve
+      const improveList = document.getElementById('improve-list');
+      improveList.innerHTML = '';
+      const improve = log.areas_to_improve?.length ? log.areas_to_improve : ['ฝึกฝนการตัดสินใจภายใต้แรงกดดันด้านเวลา'];
+      improve.forEach(i => {
+        const li = document.createElement('li');
+        li.textContent = i;
+        improveList.appendChild(li);
+      });
+
+      // Detailed Answers
+      const answersContainer = document.getElementById('detailed-answers-container');
+      answersContainer.innerHTML = '';
+      const answers = log.detailed_answers || [];
+      answers.forEach((ans, idx) => {
+        const box = document.createElement('div');
+        box.style.background = 'rgba(255, 255, 255, 0.03)';
+        box.style.border = '1px solid var(--border-subtle)';
+        box.style.borderRadius = 'var(--radius-md)';
+        box.style.padding = '1rem 1.25rem';
+
+        const isCorrect = ans.status === 'correct';
+        box.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+            <span style="font-weight:700; color:#fff; font-size:0.95rem;">
+              ${ans.title}
+            </span>
+            <span class="badge ${isCorrect ? 'badge-emerald' : 'badge-amber'}">${ans.score}</span>
+          </div>
+          <p style="color:var(--text-muted); font-size:0.88rem; margin:0;">
+            ${ans.note}
+          </p>
+        `;
+        answersContainer.appendChild(box);
+      });
+
+      // Replay button
+      document.getElementById('replay-btn').addEventListener('click', () => {
+        const careerId = log.career_id || 'pharmacist';
+        window.location.href = `minigames/${careerId}.html`;
+      });
+    });
+  </script>
+</body>
+</html>

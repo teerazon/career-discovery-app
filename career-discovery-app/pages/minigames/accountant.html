@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>เกมจำลองนักบัญชี (Accounting Simulation) | Career Discovery Platform</title>
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/games.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <div class="game-viewport">
+    <div class="game-container">
+      
+      <!-- Simulation HUD -->
+      <div class="game-hud">
+        <div class="hud-career-info">
+          <div class="hud-icon" style="background: linear-gradient(135deg, #8b5cf6, #6d28d9);">
+            <i class="fa-solid fa-calculator"></i>
+          </div>
+          <div class="hud-details">
+            <h2>นักบัญชี (Accountant & Auditor)</h2>
+            <p>24-Hour Financial & Audit Simulation</p>
+          </div>
+        </div>
+
+        <div class="hud-stats-group">
+          <div class="hud-stat-box">
+            <div class="hud-stat-label">ช่วงเวลา</div>
+            <div class="hud-stat-val" id="hud-time" style="font-size:1.05rem; color:#8b5cf6;">09:00 น.</div>
+          </div>
+          <div class="hud-stat-box">
+            <div class="hud-stat-label">คะแนนสะสม</div>
+            <div class="hud-stat-val" id="hud-score" style="color:#ffffff;">0 / 100</div>
+          </div>
+          <a href="index.html" class="btn btn-ghost btn-sm" title="ออกจากการจำลอง" style="color:var(--text-dim);">
+            <i class="fa-solid fa-xmark"></i> ออก
+          </a>
+        </div>
+      </div>
+
+      <!-- 24-Hour Timeline Checkpoints -->
+      <div class="sim-timeline">
+        <div class="timeline-checkpoint active">
+          <div class="timeline-dot"></div>
+          <span>09:00 น. Debit/Credit</span>
+        </div>
+        <div style="flex:1; height:2px; background:var(--border-subtle);"></div>
+        <div class="timeline-checkpoint">
+          <div class="timeline-dot"></div>
+          <span>11:30 น. Balance Sheet ไม่ดุล</span>
+        </div>
+        <div style="flex:1; height:2px; background:var(--border-subtle);"></div>
+        <div class="timeline-checkpoint">
+          <div class="timeline-dot"></div>
+          <span>15:00 น. จรรยาบรรณภาษี</span>
+        </div>
+      </div>
+
+      <!-- Interactive Stage Container -->
+      <div id="game-stage-container">
+        <!-- Rendered by accountant.js -->
+      </div>
+
+    </div>
+  </div>
+
+  <script type="module">
+    import { initAccountantGame } from '../../assets/js/games/accountant.js';
+    document.addEventListener('DOMContentLoaded', () => {
+      initAccountantGame();
+    });
+  </script>
+</body>
+</html>

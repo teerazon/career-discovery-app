@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>เลือกรอบการเล่นมินิเกม 24h Simulation | Career Discovery Platform</title>
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container navbar">
+      <a href="../../index.html" class="logo-group">
+        <div class="logo-icon"><i class="fa-solid fa-compass"></i></div>
+        <div class="logo-text">
+          <span>CAREER PATH</span>
+          <span class="logo-sub">Discovery & Minigame</span>
+        </div>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="../../index.html" class="nav-link"><i class="fa-solid fa-house"></i> หน้าแรก</a></li>
+        <li><a href="../explore.html" class="nav-link"><i class="fa-solid fa-magnifying-glass"></i> สำรวจอาชีพ</a></li>
+        <li><a href="index.html" class="nav-link active"><i class="fa-solid fa-gamepad"></i> มินิเกมจำลอง (24h)</a></li>
+        <li><a href="../guidance/faculties.html" class="nav-link"><i class="fa-solid fa-graduation-cap"></i> คณะและสาขา</a></li>
+        <li><a href="../guidance/universities.html" class="nav-link"><i class="fa-solid fa-building-columns"></i> มหาวิทยาลัย</a></li>
+        <li><a href="../profile.html" class="nav-link"><i class="fa-solid fa-user-astronaut"></i> โปรไฟล์</a></li>
+      </ul>
+
+      <div class="nav-auth-group">
+        <div id="navbar-auth-section"></div>
+        <button id="mobile-menu-toggle" class="mobile-toggle"><i class="fa-solid fa-bars"></i></button>
+      </div>
+    </div>
+  </header>
+
+  <main style="padding: 3.5rem 0 5rem;">
+    <div class="container">
+      <div style="text-align: center; margin-bottom: 3rem;">
+        <span class="badge badge-primary" style="margin-bottom: 0.75rem;">
+          <i class="fa-solid fa-clock-rotate-left"></i> 24-Hour Career Roleplay
+        </span>
+        <h1 style="font-size: 2.3rem; margin-bottom: 0.75rem;">เลือกรอบการจำลองอาชีพในฝัน</h1>
+        <p style="color: var(--text-muted); max-width: 680px; margin: 0 auto;">
+          จำลอง 1 วันทำงานจริงตั้งแต่ช่วงเช้า กลางวันเร่งด่วน ไปจนถึงวิกฤตช่วงเย็น 
+          ประเมินทักษะ 4 ด้าน (คิดวิเคราะห์, แก้ปัญหา, สื่อสาร, รอบคอบ) แบบทันที
+        </p>
+      </div>
+
+      <!-- 5 Career Games Grid -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem;">
+        
+        <!-- Game 1: Pharmacist -->
+        <div class="card card-interactive card-glowing" style="display: flex; flex-direction: column;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+            <div style="width: 52px; height: 52px; border-radius: 14px; background: rgba(16, 185, 129, 0.15); color: #10b981; display: flex; align-items: center; justify-content: center; font-size: 1.75rem;">
+              <i class="fa-solid fa-prescription-bottle-medical"></i>
+            </div>
+            <span class="badge badge-emerald">เน้นความรอบคอบ 95%</span>
+          </div>
+
+          <h2 style="font-size: 1.35rem; margin-bottom: 0.5rem;">เภสัชกร (Pharmacist)</h2>
+          <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.5; margin-bottom: 1.5rem;">
+            เผชิญหน้าเคสใบสั่งยาผู้ป่วยโรคไตเรื้อรัง, มินิเกมนับเม็ดยาลงถาดปัดจำนวนแข่งกับเวลา และให้คำแนะนำยาปฏิชีวนะเด็ก
+          </p>
+
+          <div style="background: rgba(255,255,255,0.03); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1.5rem;">
+            <div style="font-size: 0.8rem; font-weight: 700; color: #10b981; margin-bottom: 0.5rem; text-transform: uppercase;">
+              จุดเด่นระบบจำลอง:
+            </div>
+            <ul style="font-size: 0.82rem; color: var(--text-muted); padding-left: 1.2rem; display: flex; flex-direction: column; gap: 4px;">
+              <li>วิเคราะห์ประวัติแพ้ยาและโรคประจำตัว</li>
+              <li>ถาดนับเม็ดยา (Interactive Counting Tray)</li>
+              <li>คำแนะนำผู้ปกครองเรื่องเชื้อดื้อยา</li>
+            </ul>
+          </div>
+
+          <a href="pharmacist.html" class="btn btn-success btn-block btn-lg" style="margin-top: auto;">
+            <i class="fa-solid fa-play"></i> เริ่มจำลองเภสัชกร
+          </a>
+        </div>
+
+        <!-- Game 2: Lawyer -->
+        <div class="card card-interactive card-glowing" style="display: flex; flex-direction: column;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+            <div style="width: 52px; height: 52px; border-radius: 14px; background: rgba(245, 158, 11, 0.15); color: #f59e0b; display: flex; align-items: center; justify-content: center; font-size: 1.75rem;">
+              <i class="fa-solid fa-scale-balanced"></i>
+            </div>
+            <span class="badge badge-amber">เน้นคิดวิเคราะห์ 90%</span>
+          </div>
+
+          <h2 style="font-size: 1.35rem; margin-bottom: 0.5rem;">ทนายความ (Lawyer)</h2>
+          <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.5; margin-bottom: 1.5rem;">
+            สไตล์ Ace Attorney! สืบพยานจับโกหกคำพูดพยานนักธุรกิจสายเทา, กดปุ่ม "คัดค้าน!" ทันควันเมื่ออัยการถามชี้นำ และอ้างอิง ป.วิ.อ. ม.227
+          </p>
+
+          <div style="background: rgba(255,255,255,0.03); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1.5rem;">
+            <div style="font-size: 0.8rem; font-weight: 700; color: #f59e0b; margin-bottom: 0.5rem; text-transform: uppercase;">
+              จุดเด่นระบบจำลอง:
+            </div>
+            <ul style="font-size: 0.82rem; color: var(--text-muted); padding-left: 1.2rem; display: flex; flex-direction: column; gap: 4px;">
+              <li>ซักค้านจับโกหกพยานขัดแย้งกับ CCTV</li>
+              <li>ปุ่ม Objection! พร้อมเอฟเฟกต์สั่นจอ</li>
+              <li>ค้นมาตรากฎหมาย ป.วิ.อ. ยกประโยชน์แห่งความสงสัย</li>
+            </ul>
+          </div>
+
+          <a href="lawyer.html" class="btn btn-primary btn-block btn-lg" style="margin-top: auto; background: linear-gradient(135deg, #f59e0b, #d97706);">
+            <i class="fa-solid fa-play"></i> เริ่มจำลองทนายความ
+          </a>
+        </div>
+
+        <!-- Game 3: Teacher -->
+        <div class="card card-interactive card-glowing" style="display: flex; flex-direction: column;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+            <div style="width: 52px; height: 52px; border-radius: 14px; background: rgba(6, 182, 212, 0.15); color: #06b6d4; display: flex; align-items: center; justify-content: center; font-size: 1.75rem;">
+              <i class="fa-solid fa-chalkboard-user"></i>
+            </div>
+            <span class="badge badge-cyan">เน้นสื่อสาร & จิตวิทยา 92%</span>
+          </div>
+
+          <h2 style="font-size: 1.35rem; margin-bottom: 0.5rem;">ครู / อาจารย์ (Teacher)</h2>
+          <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.5; margin-bottom: 1.5rem;">
+            ควบคุมหลอดสมาธิห้องเรียน (Attention Meter), ตรวจสมุดการบ้านจับจุดผิดคำนวณส่วนลด และใช้ Empathy รับมือผู้ปกครองเข้าข้างลูก
+          </p>
+
+          <div style="background: rgba(255,255,255,0.03); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1.5rem;">
+            <div style="font-size: 0.8rem; font-weight: 700; color: #06b6d4; margin-bottom: 0.5rem; text-transform: uppercase;">
+              จุดเด่นระบบจำลอง:
+            </div>
+            <ul style="font-size: 0.82rem; color: var(--text-muted); padding-left: 1.2rem; display: flex; flex-direction: column; gap: 4px;">
+              <li>หลอด Attention Meter ไดนามิก</li>
+              <li>ตรวจการบ้านและเขียน Constructive Feedback</li>
+              <li>จิตวิทยาการให้คำปรึกษาและไกล่เกลี่ย</li>
+            </ul>
+          </div>
+
+          <a href="teacher.html" class="btn btn-accent btn-block btn-lg" style="margin-top: auto;">
+            <i class="fa-solid fa-play"></i> เริ่มจำลองครูอาจารย์
+          </a>
+        </div>
+
+        <!-- Game 4: Accountant -->
+        <div class="card card-interactive card-glowing" style="display: flex; flex-direction: column;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+            <div style="width: 52px; height: 52px; border-radius: 14px; background: rgba(139, 92, 246, 0.15); color: #8b5cf6; display: flex; align-items: center; justify-content: center; font-size: 1.75rem;">
+              <i class="fa-solid fa-calculator"></i>
+            </div>
+            <span class="badge badge-purple">เน้นความละเอียดรอบคอบ 96%</span>
+          </div>
+
+          <h2 style="font-size: 1.35rem; margin-bottom: 0.5rem;">นักบัญชี (Accountant)</h2>
+          <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.5; margin-bottom: 1.5rem;">
+            แยกเดบิต/เครดิตค่าเช่าค้างจ่าย, ตรวจสอบหานัยสำคัญงบแสดงฐานะการเงินไม่ดุล 50,000 บาท และยึดมั่นจรรยาบรรณปฏิเสธบิลยับยู่ยี่สายเลี่ยงภาษี
+          </p>
+
+          <div style="background: rgba(255,255,255,0.03); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1.5rem;">
+            <div style="font-size: 0.8rem; font-weight: 700; color: #8b5cf6; margin-bottom: 0.5rem; text-transform: uppercase;">
+              จุดเด่นระบบจำลอง:
+            </div>
+            <ul style="font-size: 0.82rem; color: var(--text-muted); padding-left: 1.2rem; display: flex; flex-direction: column; gap: 4px;">
+              <li>สมุดรายวันทั่วไปตามเกณฑ์คงค้าง</li>
+              <li>หาสาเหตุ Balance Sheet ไม่ดุล</li>
+              <li>จรรยาบรรณภาษีค่าใช้จ่ายต้องห้าม</li>
+            </ul>
+          </div>
+
+          <a href="accountant.html" class="btn btn-primary btn-block btn-lg" style="margin-top: auto;">
+            <i class="fa-solid fa-play"></i> เริ่มจำลองนักบัญชี
+          </a>
+        </div>
+
+        <!-- Game 5: Programmer -->
+        <div class="card card-interactive card-glowing" style="display: flex; flex-direction: column;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+            <div style="width: 52px; height: 52px; border-radius: 14px; background: rgba(99, 102, 241, 0.15); color: #6366f1; display: flex; align-items: center; justify-content: center; font-size: 1.75rem;">
+              <i class="fa-solid fa-code"></i>
+            </div>
+            <span class="badge badge-primary">เน้นแก้ปัญหา 98%</span>
+          </div>
+
+          <h2 style="font-size: 1.35rem; margin-bottom: 0.5rem;">โปรแกรมเมอร์ (Software Engineer)</h2>
+          <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.5; margin-bottom: 1.5rem;">
+            จัดบอร์ด Sprint Planning ลำดับ P0 บั๊กระบบชำระเงิน, แก้ไข TypeError ด้วย Optional Chaining และรับมือลูกค้าระบุเปลี่ยนฟีเจอร์ด่วน ASAP
+          </p>
+
+          <div style="background: rgba(255,255,255,0.03); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1.5rem;">
+            <div style="font-size: 0.8rem; font-weight: 700; color: #6366f1; margin-bottom: 0.5rem; text-transform: uppercase;">
+              จุดเด่นระบบจำลอง:
+            </div>
+            <ul style="font-size: 0.82rem; color: var(--text-muted); padding-left: 1.2rem; display: flex; flex-direction: column; gap: 4px;">
+              <li>Agile Sprint Board จัดลำดับความสำคัญ</li>
+              <li>Interactive Code Debugger (Null Safety)</li>
+              <li>รับมือ Scope Creep และการ Deploy Production</li>
+            </ul>
+          </div>
+
+          <a href="programmer.html" class="btn btn-primary btn-block btn-lg" style="margin-top: auto; background: linear-gradient(135deg, #6366f1, #4f46e5);">
+            <i class="fa-solid fa-play"></i> เริ่มจำลองโปรแกรมเมอร์
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Scripts -->
+  <script type="module" src="../../assets/js/utils/authCheck.js"></script>
+</body>
+</html>

@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Career Discovery & Minigame Platform | ค้นพบอาชีพที่ใช่ผ่านการจำลองจริง</title>
+  <meta name="description"
+    content="แพลตฟอร์มค้นหาตัวเองและแนะแนวการศึกษาด้วยระบบเกมจำลองสถานการณ์อาชีพ 24 ชั่วโมง เชื่อมโยงคณะและมหาวิทยาลัยชั้นนำ">
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="assets/css/main.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+
+  <!-- Header & Navbar -->
+  <header class="site-header">
+    <div class="container navbar">
+      <a href="index.html" class="logo-group">
+        <div class="logo-icon">
+          <i class="fa-solid fa-compass"></i>
+        </div>
+        <div class="logo-text">
+          <span>CAREER PATH</span>
+          <span class="logo-sub">Discovery & Minigame</span>
+        </div>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html" class="nav-link active"><i class="fa-solid fa-house"></i> หน้าแรก</a></li>
+        <li><a href="pages/explore.html" class="nav-link"><i class="fa-solid fa-magnifying-glass"></i> สำรวจอาชีพ</a>
+        </li>
+        <li><a href="pages/minigames/index.html" class="nav-link"><i class="fa-solid fa-gamepad"></i> มินิเกมจำลอง
+            (24h)</a></li>
+        <li><a href="pages/guidance/faculties.html" class="nav-link"><i class="fa-solid fa-graduation-cap"></i>
+            คณะและสาขา</a></li>
+        <li><a href="pages/guidance/universities.html" class="nav-link"><i class="fa-solid fa-building-columns"></i>
+            มหาวิทยาลัย</a></li>
+        <li><a href="pages/profile.html" class="nav-link"><i class="fa-solid fa-user-astronaut"></i> โปรไฟล์</a></li>
+      </ul>
+
+      <div class="nav-auth-group">
+        <div id="navbar-auth-section">
+          <!-- Populated by authCheck.js -->
+        </div>
+        <button id="mobile-menu-toggle" class="mobile-toggle" aria-label="เมนู">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Hero Section -->
+  <main>
+    <section style="padding: 4.5rem 0 3.5rem; position: relative; overflow: hidden;">
+      <div class="container" style="text-align: center; position: relative; z-index: 2;">
+        <div
+          style="display: inline-flex; align-items: center; gap: 8px; background: rgba(99, 102, 241, 0.12); border: 1px solid rgba(99, 102, 241, 0.3); padding: 0.4rem 1rem; border-radius: 9999px; margin-bottom: 1.5rem;"
+          class="animate-fade-in">
+          <i class="fa-solid fa-sparkles" style="color: var(--primary-light);"></i>
+          <span style="font-size: 0.88rem; font-weight: 600; color: var(--primary-light);">
+            ระบบจำลอง 24 ชั่วโมงแห่งอาชีพในฝัน (Interactive Roleplay)
+          </span>
+        </div>
+
+        <h1
+          style="font-size: clamp(2.2rem, 5vw, 3.8rem); font-weight: 800; max-width: 900px; margin: 0 auto 1.25rem; line-height: 1.25;"
+          class="animate-slide-up">
+          ค้นพบอาชีพที่ใช่ <span
+            style="background: linear-gradient(135deg, var(--primary-light) 0%, var(--accent-cyan) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">ด้วยประสบการณ์จริง</span>
+          ก่อนเลือกเรียน
+        </h1>
+
+        <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 680px; margin: 0 auto 2.5rem; line-height: 1.7;"
+          class="animate-slide-up">
+          สัมผัสความท้าทายของ 5 สายอาชีพยอดนิยม: เภสัชกร, ทนายความ, ครู, นักบัญชี และโปรแกรมเมอร์
+          วิเคราะห์ทักษะ 4 ด้าน พร้อมคำแนะนำคณะและมหาวิทยาลัยที่ตรงกับตัวคุณที่สุด
+        </p>
+
+        <!-- Search Bar -->
+        <div style="max-width: 640px; margin: 0 auto 2.5rem; position: relative;" class="animate-slide-up">
+          <div
+            style="display: flex; gap: 8px; background: rgba(15, 23, 42, 0.85); border: 1px solid var(--border-medium); border-radius: var(--radius-full); padding: 6px 8px 6px 20px; box-shadow: var(--shadow-md);">
+            <i class="fa-solid fa-magnifying-glass"
+              style="align-self: center; color: var(--text-muted); font-size: 1.1rem;"></i>
+            <input type="text" id="quick-search-input"
+              placeholder="พิมพ์ชื่ออาชีพ เช่น เภสัชกร, โปรแกรมเมอร์, หรือคณะ..."
+              style="flex: 1; background: transparent; border: none; color: #fff; outline: none; font-size: 0.98rem;">
+            <button id="quick-search-btn" class="btn btn-primary btn-sm"
+              style="border-radius: var(--radius-full); padding: 0.65rem 1.4rem;">
+              ค้นหา
+            </button>
+          </div>
+        </div>
+
+        <!-- Quick CTAs -->
+        <div style="display: flex; align-items: center; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+          <a href="pages/minigames/index.html" class="btn btn-primary btn-lg">
+            <i class="fa-solid fa-gamepad"></i> เข้าเล่นมินิเกมจำลองอาชีพ
+          </a>
+          <a href="pages/explore.html" class="btn btn-secondary btn-lg">
+            <i class="fa-solid fa-compass"></i> สำรวจข้อมูลอาชีพทั้งหมด
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4 Skills Evaluation Framework -->
+    <section
+      style="padding: 3rem 0; background: rgba(255, 255, 255, 0.02); border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle);">
+      <div class="container">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+          <h2 style="font-size: 1.75rem; margin-bottom: 0.5rem;">ระบบประเมิน 4 ทักษะหลัก (Skills Framework)</h2>
+          <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto;">
+            ทุกมินิเกมจะบันทึกและวิเคราะห์สมรรถนะของคุณ เพื่อสะท้อนความถนัดที่แท้จริง</p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem;">
+          <div class="card" style="text-align: center;">
+            <div
+              style="width: 52px; height: 52px; border-radius: 14px; background: rgba(99, 102, 241, 0.15); color: var(--primary-light); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin: 0 auto 1rem;">
+              <i class="fa-solid fa-brain"></i>
+            </div>
+            <h3 style="font-size: 1.15rem; margin-bottom: 0.5rem;">1. คิดวิเคราะห์ (Analytical)</h3>
+            <p style="font-size: 0.88rem; color: var(--text-muted);">การแยกแยะข้อมูล สังเกตความผิดปกติ
+              และจับประเด็นสาระสำคัญ</p>
+          </div>
+
+          <div class="card" style="text-align: center;">
+            <div
+              style="width: 52px; height: 52px; border-radius: 14px; background: rgba(6, 182, 212, 0.15); color: var(--accent-cyan); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin: 0 auto 1rem;">
+              <i class="fa-solid fa-puzzle-piece"></i>
+            </div>
+            <h3 style="font-size: 1.15rem; margin-bottom: 0.5rem;">2. แก้ปัญหา (Problem Solving)</h3>
+            <p style="font-size: 0.88rem; color: var(--text-muted);">
+              การตัดสินใจภายใต้สถานการณ์เร่งด่วนและการแก้โจทย์ซับซ้อน</p>
+          </div>
+
+          <div class="card" style="text-align: center;">
+            <div
+              style="width: 52px; height: 52px; border-radius: 14px; background: rgba(139, 92, 246, 0.15); color: var(--accent-purple); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin: 0 auto 1rem;">
+              <i class="fa-solid fa-comments"></i>
+            </div>
+            <h3 style="font-size: 1.15rem; margin-bottom: 0.5rem;">3. การสื่อสาร (Communication)</h3>
+            <p style="font-size: 0.88rem; color: var(--text-muted);">การถ่ายทอดความคิด อธิบายเรื่องยากให้เข้าใจง่าย
+              และจิตวิทยาความเข้าอกเข้าใจ</p>
+          </div>
+
+          <div class="card" style="text-align: center;">
+            <div
+              style="width: 52px; height: 52px; border-radius: 14px; background: rgba(16, 185, 129, 0.15); color: var(--accent-emerald); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin: 0 auto 1rem;">
+              <i class="fa-solid fa-shield-check"></i>
+            </div>
+            <h3 style="font-size: 1.15rem; margin-bottom: 0.5rem;">4. ความรอบคอบ (Thoroughness)</h3>
+            <p style="font-size: 0.88rem; color: var(--text-muted);">ความแม่นยำ ไม่ผิดพลาด ตรวจทานรายละเอียด
+              และยึดมั่นในมาตรฐาน</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5 Minigames Showcase Section -->
+    <section style="padding: 4.5rem 0;">
+      <div class="container">
+        <div
+          style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <span class="badge badge-primary" style="margin-bottom: 0.5rem;">24 Hours Roleplay Simulation</span>
+            <h2 style="font-size: 2rem;">เลือกรอบการจำลองอาชีพ (Minigame Selection)</h2>
+          </div>
+          <a href="pages/minigames/index.html" class="btn btn-outline btn-sm">
+            ดูมินิเกมทั้งหมด <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.75rem;"
+          id="featured-games-grid">
+          <!-- Card 1: Pharmacist -->
+          <div class="card card-interactive card-glowing">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+              <div
+                style="width: 50px; height: 50px; border-radius: 12px; background: rgba(16, 185, 129, 0.15); color: #10b981; display: flex; align-items: center; justify-content: center; font-size: 1.6rem;">
+                <i class="fa-solid fa-prescription-bottle-medical"></i>
+              </div>
+              <span class="badge badge-emerald">32,000 - 65,000+ ฿</span>
+            </div>
+            <h3 style="font-size: 1.25rem; margin-bottom: 0.35rem;">เกมจำลองเภสัชกร</h3>
+            <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1.25rem; line-height: 1.5;">
+              วิเคราะห์อาการแพ้ยาของผู้ป่วยโรคไต, มินิเกมนับเม็ดยาลงถาดปัดจำนวน และให้คำปรึกษาการใช้ยาปฏิชีวนะเด็ก
+            </p>
+            <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1.5rem;">
+              <span class="badge badge-primary">ความรอบคอบ</span>
+              <span class="badge badge-cyan">ถาดนับยา</span>
+              <span class="badge badge-amber">แพ้ยา</span>
+            </div>
+            <a href="pages/minigames/pharmacist.html" class="btn btn-success btn-block">
+              <i class="fa-solid fa-play"></i> เริ่มรอบจำลองเภสัชกร
+            </a>
+          </div>
+
+          <!-- Card 2: Lawyer -->
+          <div class="card card-interactive card-glowing">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+              <div
+                style="width: 50px; height: 50px; border-radius: 12px; background: rgba(245, 158, 11, 0.15); color: #f59e0b; display: flex; align-items: center; justify-content: center; font-size: 1.6rem;">
+                <i class="fa-solid fa-scale-balanced"></i>
+              </div>
+              <span class="badge badge-amber">28,000 - 85,000+ ฿</span>
+            </div>
+            <h3 style="font-size: 1.25rem; margin-bottom: 0.35rem;">เกมจำลองทนายความ</h3>
+            <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1.25rem; line-height: 1.5;">
+              สไตล์ Ace Attorney! ซักค้านจับโกหกคำพูดพยานนักธุรกิจสายเทา, กดปุ่ม "คัดค้าน!" เมื่ออัยการถามชี้นำ และค้น
+              ป.วิ.อ. ม.227
+            </p>
+            <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1.5rem;">
+              <span class="badge badge-rose">Objection!</span>
+              <span class="badge badge-amber">จับโกหกพยาน</span>
+              <span class="badge badge-primary">ป.วิ.อ.</span>
+            </div>
+            <a href="pages/minigames/lawyer.html" class="btn btn-primary btn-block"
+              style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+              <i class="fa-solid fa-play"></i> เริ่มรอบว่าความในศาล
+            </a>
+          </div>
+
+          <!-- Card 3: Teacher -->
+          <div class="card card-interactive card-glowing">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+              <div
+                style="width: 50px; height: 50px; border-radius: 12px; background: rgba(6, 182, 212, 0.15); color: #06b6d4; display: flex; align-items: center; justify-content: center; font-size: 1.6rem;">
+                <i class="fa-solid fa-chalkboard-user"></i>
+              </div>
+              <span class="badge badge-cyan">20,000 - 55,000+ ฿</span>
+            </div>
+            <h3 style="font-size: 1.25rem; margin-bottom: 0.35rem;">เกมจำลองครู</h3>
+            <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1.25rem; line-height: 1.5;">
+              ควบคุมหลอดสมาธิห้องเรียน (Attention Meter), ตรวจสมุดการบ้านจับจุดผิดส่วนลด และใช้ Empathy
+              รับมือผู้ปกครองเข้าข้างลูก
+            </p>
+            <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1.5rem;">
+              <span class="badge badge-cyan">Attention Meter</span>
+              <span class="badge badge-emerald">ตรวจการบ้าน</span>
+              <span class="badge badge-purple">จิตวิทยา</span>
+            </div>
+            <a href="pages/minigames/teacher.html" class="btn btn-accent btn-block">
+              <i class="fa-solid fa-play"></i> เริ่มรอบชั่วโมงสอน
+            </a>
+          </div>
+
+          <!-- Card 4: Accountant -->
+          <div class="card card-interactive card-glowing">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+              <div
+                style="width: 50px; height: 50px; border-radius: 12px; background: rgba(139, 92, 246, 0.15); color: #8b5cf6; display: flex; align-items: center; justify-content: center; font-size: 1.6rem;">
+                <i class="fa-solid fa-calculator"></i>
+              </div>
+              <span class="badge badge-primary">25,000 - 90,000+ ฿</span>
+            </div>
+            <h3 style="font-size: 1.25rem; margin-bottom: 0.35rem;">เกมจำลองนักบัญชี</h3>
+            <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1.25rem; line-height: 1.5;">
+              แยกเดบิต-เครดิตค่าเช่าค้างจ่าย, ตรวจสอบนัยสำคัญงบไม่ดุล 50,000 บาท
+              และยึดมั่นจรรยาบรรณปฏิเสธบิลยับยู่ยี่สายเลี่ยงภาษี
+            </p>
+            <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1.5rem;">
+              <span class="badge badge-purple">Debit/Credit</span>
+              <span class="badge badge-rose">งบไม่ดุล</span>
+              <span class="badge badge-emerald">จรรยาบรรณภาษี</span>
+            </div>
+            <a href="pages/minigames/accountant.html" class="btn btn-primary btn-block">
+              <i class="fa-solid fa-play"></i> เริ่มรอบปิดงบบัญชี
+            </a>
+          </div>
+
+          <!-- Card 5: Programmer -->
+          <div class="card card-interactive card-glowing">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+              <div
+                style="width: 50px; height: 50px; border-radius: 12px; background: rgba(99, 102, 241, 0.15); color: #6366f1; display: flex; align-items: center; justify-content: center; font-size: 1.6rem;">
+                <i class="fa-solid fa-code"></i>
+              </div>
+              <span class="badge badge-primary">35,000 - 120,000+ ฿</span>
+            </div>
+            <h3 style="font-size: 1.25rem; margin-bottom: 0.35rem;">เกมจำลองโปรแกรมเมอร์</h3>
+            <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1.25rem; line-height: 1.5;">
+              จัดบอร์ด Sprint Planning ลำดับ P0, แก้บั๊ก TypeError ด้วย Optional Chaining
+              และรับมือลูกค้าระบุเปลี่ยนฟีเจอร์ด่วน ASAP
+            </p>
+            <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1.5rem;">
+              <span class="badge badge-cyan">Sprint P0</span>
+              <span class="badge badge-rose">Bug Hunt</span>
+              <span class="badge badge-amber">ASAP Client</span>
+            </div>
+            <a href="pages/minigames/programmer.html" class="btn btn-primary btn-block"
+              style="background: linear-gradient(135deg, #6366f1, #4f46e5);">
+              <i class="fa-solid fa-play"></i> เริ่มรอบ Sprint & Debug
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Guidance Quick Teaser -->
+    <section style="padding: 3rem 0 5rem; background: rgba(15, 23, 42, 0.5);">
+      <div class="container">
+        <div class="card"
+          style="padding: 3rem; background: linear-gradient(135deg, rgba(30, 41, 67, 0.8) 0%, rgba(15, 23, 42, 0.95) 100%); border: 1px solid var(--border-medium); text-align: center;">
+          <h2 style="font-size: 2rem; margin-bottom: 1rem;">พร้อมเริ่มต้นค้นหาอนาคตของคุณแล้วหรือยัง?</h2>
+          <p style="color: var(--text-muted); font-size: 1.05rem; max-width: 640px; margin: 0 auto 2rem;">
+            สมัครสมาชิกเพื่อบันทึกประวัติการเล่น สถิติทักษะ เรดาร์ชาร์ต และรับการแนะนำหลักสูตร TCAS
+            มหาวิทยาลัยที่สอดคล้องกับคุณ
+          </p>
+          <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+            <a href="pages/auth/register.html" class="btn btn-primary btn-lg">
+              <i class="fa-solid fa-user-plus"></i> สมัครสมาชิกและทำ Onboarding
+            </a>
+            <a href="pages/guidance/universities.html" class="btn btn-secondary btn-lg">
+              <i class="fa-solid fa-building-columns"></i> ดูเกณฑ์คะแนน TCAS มหาวิทยาลัย
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo-group">
+            <div class="logo-icon"><i class="fa-solid fa-compass"></i></div>
+            <div class="logo-text">
+              <span>CAREER PATH</span>
+              <span class="logo-sub">Discovery & Minigame</span>
+            </div>
+          </div>
+          <p>
+            แพลตฟอร์มค้นหาอาชีพและแนะแนวการศึกษาด้วยเกมจำลองสถานการณ์ 24 ชั่วโมง
+            พัฒนาด้วย Vanilla Web Stack และ Supabase
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4>มินิเกมจำลอง</h4>
+          <ul class="footer-links">
+            <li><a href="pages/minigames/pharmacist.html">จำลองเภสัชกร</a></li>
+            <li><a href="pages/minigames/lawyer.html">จำลองทนายความ</a></li>
+            <li><a href="pages/minigames/teacher.html">จำลองครูอาจารย์</a></li>
+            <li><a href="pages/minigames/accountant.html">จำลองนักบัญชี</a></li>
+            <li><a href="pages/minigames/programmer.html">จำลองโปรแกรมเมอร์</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>แนะแนวการศึกษา</h4>
+          <ul class="footer-links">
+            <li><a href="pages/explore.html">ค้นหาและเปรียบเทียบอาชีพ</a></li>
+            <li><a href="pages/guidance/faculties.html">ข้อมูลคณะและใบประกอบวิชาชีพ</a></li>
+            <li><a href="pages/guidance/universities.html">มหาวิทยาลัยและเกณฑ์ TCAS</a></li>
+            <li><a href="pages/profile.html">โปรไฟล์และสถิติทักษะ</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>เกี่ยวกับระบบ</h4>
+          <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1rem;">
+            โครงการแพลตฟอร์มแนะแนวอาชีพยุคใหม่ ใช้งานร่วมกับ Supabase Database และ Vercel Deployment
+          </p>
+          <div style="display: flex; gap: 10px;">
+            <a href="pages/auth/register.html" class="btn btn-outline btn-sm">เริ่มต้นใช้งาน</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>© 2026 Career Discovery & Minigame Platform. All rights reserved.</div>
+        <div style="color: var(--text-dim);">Designed with Vanilla HTML5, CSS3 & ES6 Modules</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script type="module" src="assets/js/utils/authCheck.js"></script>
+  <script type="module">
+    import { navigateTo } from './assets/js/utils/router.js';
+
+    document.getElementById('quick-search-btn')?.addEventListener('click', () => {
+      const q = document.getElementById('quick-search-input')?.value.trim();
+      window.location.href = `pages/explore.html?q=${encodeURIComponent(q)}`;
+    });
+
+    document.getElementById('quick-search-input')?.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        const q = e.target.value.trim();
+        window.location.href = `pages/explore.html?q=${encodeURIComponent(q)}`;
+      }
+    });
+  </script>
+</body>
+
+</html>

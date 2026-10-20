@@ -1,0 +1,23 @@
+{
+  "name": "career-discovery-platform",
+  "version": "1.0.0",
+  "description": "Career Discovery & Minigame Platform",
+  "main": "career-discovery-app/index.html",
+  "scripts": {
+    "start": "serve career-discovery-app -l 3000",
+    "dev": "serve career-discovery-app -l 3000",
+    "build": "echo 'Static assets ready for deployment'"
+  },
+  "keywords": [
+    "career-discovery",
+    "education",
+    "simulation",
+    "tcas",
+    "minigames"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "serve": "^14.2.4"
+  }
+}

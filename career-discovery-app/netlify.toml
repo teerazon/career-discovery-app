@@ -1,0 +1,55 @@
+[build]
+  publish = "."
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[redirects]]
+  from = "/explore"
+  to = "/pages/explore.html"
+  status = 200
+
+[[redirects]]
+  from = "/minigames"
+  to = "/pages/minigames/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/profile"
+  to = "/pages/profile.html"
+  status = 200
+
+[[redirects]]
+  from = "/score-summary"
+  to = "/pages/score-summary.html"
+  status = 200
+
+[[redirects]]
+  from = "/faculties"
+  to = "/pages/guidance/faculties.html"
+  status = 200
+
+[[redirects]]
+  from = "/universities"
+  to = "/pages/guidance/universities.html"
+  status = 200
+
+[[redirects]]
+  from = "/login"
+  to = "/pages/auth/login.html"
+  status = 200
+
+[[redirects]]
+  from = "/register"
+  to = "/pages/auth/register.html"
+  status = 200
