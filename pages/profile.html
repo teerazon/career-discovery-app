@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>โปรไฟล์ผู้ใช้งานและสถิติทักษะ | Career Discovery Platform</title>
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container navbar">
+      <a href="../index.html" class="logo-group">
+        <div class="logo-icon"><i class="fa-solid fa-compass"></i></div>
+        <div class="logo-text">
+          <span>CAREER PATH</span>
+          <span class="logo-sub">Discovery & Minigame</span>
+        </div>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="../index.html" class="nav-link"><i class="fa-solid fa-house"></i> หน้าแรก</a></li>
+        <li><a href="explore.html" class="nav-link"><i class="fa-solid fa-magnifying-glass"></i> สำรวจอาชีพ</a></li>
+        <li><a href="minigames/index.html" class="nav-link"><i class="fa-solid fa-gamepad"></i> มินิเกมจำลอง (24h)</a></li>
+        <li><a href="guidance/faculties.html" class="nav-link"><i class="fa-solid fa-graduation-cap"></i> คณะและสาขา</a></li>
+        <li><a href="guidance/universities.html" class="nav-link"><i class="fa-solid fa-building-columns"></i> มหาวิทยาลัย</a></li>
+        <li><a href="profile.html" class="nav-link active"><i class="fa-solid fa-user-astronaut"></i> โปรไฟล์</a></li>
+      </ul>
+
+      <div class="nav-auth-group">
+        <div id="navbar-auth-section"></div>
+        <button id="mobile-menu-toggle" class="mobile-toggle"><i class="fa-solid fa-bars"></i></button>
+      </div>
+    </div>
+  </header>
+
+  <main style="padding: 3.5rem 0 5rem;">
+    <div class="container">
+      
+      <!-- User Profile Header Card -->
+      <div class="card card-glowing animate-slide-up" style="margin-bottom: 2rem; padding: 2.5rem;">
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem;">
+          
+          <div style="display: flex; align-items: center; gap: 1.5rem;">
+            <div id="profile-avatar" style="width: 72px; height: 72px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--accent-purple)); display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: 800; color: #fff; box-shadow: 0 4px 18px var(--primary-glow);">
+              U
+            </div>
+            <div>
+              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 4px;">
+                <h1 id="profile-username" style="font-size: 1.75rem;">ผู้สำรวจอาชีพ</h1>
+                <span class="badge badge-primary">Explorer Level 1</span>
+              </div>
+              <div style="color: var(--text-muted); font-size: 0.92rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+                <span id="profile-email"><i class="fa-solid fa-envelope"></i> explorer@career.th</span>
+                <span id="profile-education"><i class="fa-solid fa-graduation-cap"></i> มัธยมศึกษาตอนปลาย</span>
+                <span id="profile-province"><i class="fa-solid fa-location-dot"></i> กรุงเทพมหานคร</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 10px;">
+            <a href="auth/onboarding-careers.html" class="btn btn-secondary btn-sm">
+              <i class="fa-solid fa-pen-to-square"></i> แก้ไขอาชีพที่สนใจ
+            </a>
+            <a href="auth/onboarding-faculties.html" class="btn btn-secondary btn-sm">
+              <i class="fa-solid fa-pen-to-square"></i> แก้ไขคณะที่สนใจ
+            </a>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- 2 Columns: Skills Progression Radar & Interests -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2.5rem;">
+        
+        <!-- Radar Chart of Cumulative 4 Skills -->
+        <div class="card animate-slide-up">
+          <h2 style="font-size: 1.25rem; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 8px;">
+            <i class="fa-solid fa-chart-pie" style="color: var(--primary-light);"></i> เรดาร์สมรรถนะทักษะสะสม (Skill Radar)
+          </h2>
+          <div style="max-width: 320px; margin: 0 auto 1.5rem; width: 100%;">
+            <canvas id="profileRadarChart"></canvas>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; font-size: 0.85rem;">
+            <div class="stat-card">
+              <div class="stat-label">คิดวิเคราะห์</div>
+              <div class="stat-value" id="stat-analytical" style="font-size: 1.4rem; color: var(--primary-light);">85%</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">แก้ปัญหา</div>
+              <div class="stat-value" id="stat-problem" style="font-size: 1.4rem; color: var(--accent-cyan);">88%</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">การสื่อสาร</div>
+              <div class="stat-value" id="stat-comm" style="font-size: 1.4rem; color: var(--accent-purple);">80%</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">ความรอบคอบ</div>
+              <div class="stat-value" id="stat-thorough" style="font-size: 1.4rem; color: var(--accent-emerald);">92%</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interested Careers & Faculties -->
+        <div class="card animate-slide-up" style="display: flex; flex-direction: column;">
+          <h2 style="font-size: 1.25rem; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 8px;">
+            <i class="fa-solid fa-star" style="color: var(--accent-amber);"></i> รายการเป้าหมายที่คุณสนใจ
+          </h2>
+
+          <div style="margin-bottom: 1.5rem;">
+            <div style="font-size: 0.9rem; font-weight: 600; color: #fff; margin-bottom: 0.65rem;">
+              อาชีพที่เลือกไว้ใน Onboarding:
+            </div>
+            <div id="interested-careers-chips" style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+
+          <div style="margin-bottom: 1.5rem;">
+            <div style="font-size: 0.9rem; font-weight: 600; color: #fff; margin-bottom: 0.65rem;">
+              คณะที่สนใจศึกษาต่อ:
+            </div>
+            <div id="interested-faculties-chips" style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+
+          <div style="margin-top: auto; background: rgba(99, 102, 241, 0.08); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: var(--radius-md); padding: 1rem;">
+            <div style="font-size: 0.88rem; font-weight: 600; color: var(--primary-light); margin-bottom: 4px;">
+              คำแนะนำจากระบบ:
+            </div>
+            <p style="font-size: 0.82rem; color: var(--text-muted); margin: 0; line-height: 1.5;">
+              ทักษะความรอบคอบและการคิดวิเคราะห์ของคุณโดดเด่นมาก เหมาะสมกับสายงานเภสัชกรรม นิติศาสตร์ และเทคโนโลยีซอฟต์แวร์!
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Game History Table -->
+      <div class="card animate-slide-up">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+          <h2 style="font-size: 1.25rem; display: flex; align-items: center; gap: 8px;">
+            <i class="fa-solid fa-clock-rotate-left" style="color: var(--accent-cyan);"></i> ประวัติการจำลองอาชีพ (Simulation Logs)
+          </h2>
+          <a href="minigames/index.html" class="btn btn-primary btn-sm">
+            <i class="fa-solid fa-plus"></i> เล่นรอบจำลองใหม่
+          </a>
+        </div>
+
+        <div style="overflow-x: auto;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 0.92rem; text-align: left;">
+            <thead>
+              <tr style="border-bottom: 1px solid var(--border-medium); color: var(--text-muted);">
+                <th style="padding: 0.75rem 1rem;">อาชีพที่จำลอง</th>
+                <th style="padding: 0.75rem 1rem;">คะแนนรวม</th>
+                <th style="padding: 0.75rem 1rem;">คิดวิเคราะห์</th>
+                <th style="padding: 0.75rem 1rem;">แก้ปัญหา</th>
+                <th style="padding: 0.75rem 1rem;">การสื่อสาร</th>
+                <th style="padding: 0.75rem 1rem;">ความรอบคอบ</th>
+                <th style="padding: 0.75rem 1rem;">วันที่บันทึก</th>
+              </tr>
+            </thead>
+            <tbody id="logs-table-body">
+              <!-- Populated by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Scripts -->
+  <script type="module" src="../assets/js/utils/authCheck.js"></script>
+  <script type="module">
+    import { authService } from '../assets/js/services/authService.js';
+    import { gameService } from '../assets/js/services/gameService.js';
+    import { CAREERS_DATA, FACULTIES_DATA } from '../assets/js/services/dataService.js';
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      const profile = await authService.getCurrentProfile();
+
+      if (profile) {
+        document.getElementById('profile-username').textContent = profile.username || 'ผู้สำรวจอาชีพ';
+        document.getElementById('profile-avatar').textContent = (profile.username || 'U').charAt(0).toUpperCase();
+        document.getElementById('profile-email').innerHTML = `<i class="fa-solid fa-envelope"></i> ${profile.email || '-'}`;
+        document.getElementById('profile-education').innerHTML = `<i class="fa-solid fa-graduation-cap"></i> ${profile.education_level || 'มัธยมศึกษา'}`;
+        document.getElementById('profile-province').innerHTML = `<i class="fa-solid fa-location-dot"></i> ${profile.province || 'กรุงเทพมหานคร'}`;
+
+        // Render Interested Careers Chips
+        const careersChips = document.getElementById('interested-careers-chips');
+        careersChips.innerHTML = '';
+        const userCareers = profile.interested_careers || ['pharmacist', 'programmer'];
+        userCareers.forEach(cid => {
+          const c = CAREERS_DATA.find(item => item.id === cid);
+          const chip = document.createElement('span');
+          chip.className = 'badge badge-primary';
+          chip.style.fontSize = '0.85rem';
+          chip.style.padding = '0.35rem 0.8rem';
+          chip.innerHTML = `<i class="fa-solid ${c?.icon || 'fa-briefcase'}"></i> ${c?.title ? c.title.split('(')[0] : cid}`;
+          careersChips.appendChild(chip);
+        });
+
+        // Render Interested Faculties Chips
+        const facultiesChips = document.getElementById('interested-faculties-chips');
+        facultiesChips.innerHTML = '';
+        const userFaculties = profile.interested_faculties || ['pharmacy', 'tech'];
+        userFaculties.forEach(fid => {
+          const f = FACULTIES_DATA.find(item => item.id === fid);
+          const chip = document.createElement('span');
+          chip.className = 'badge badge-cyan';
+          chip.style.fontSize = '0.85rem';
+          chip.style.padding = '0.35rem 0.8rem';
+          chip.innerHTML = `<i class="fa-solid ${f?.icon || 'fa-graduation-cap'}"></i> ${f?.name || fid}`;
+          facultiesChips.appendChild(chip);
+        });
+      }
+
+      // Fetch Skill Averages & Render Radar
+      const averages = await gameService.getSkillAverages(profile?.id);
+      document.getElementById('stat-analytical').textContent = `${averages.analytical}%`;
+      document.getElementById('stat-problem').textContent = `${averages.problemSolving}%`;
+      document.getElementById('stat-comm').textContent = `${averages.communication}%`;
+      document.getElementById('stat-thorough').textContent = `${averages.thoroughness}%`;
+
+      const radarCanvas = document.getElementById('profileRadarChart');
+      if (radarCanvas && window.Chart) {
+        new Chart(radarCanvas, {
+          type: 'radar',
+          data: {
+            labels: ['คิดวิเคราะห์', 'แก้ปัญหา', 'การสื่อสาร', 'ความรอบคอบ'],
+            datasets: [{
+              label: 'ระดับทักษะเฉลี่ยสะสม (%)',
+              data: [averages.analytical, averages.problemSolving, averages.communication, averages.thoroughness],
+              fill: true,
+              backgroundColor: 'rgba(99, 102, 241, 0.25)',
+              borderColor: '#818cf8',
+              pointBackgroundColor: '#6366f1',
+              pointBorderColor: '#fff'
+            }]
+          },
+          options: {
+            scales: {
+              r: {
+                min: 0,
+                max: 100,
+                ticks: { display: false, stepSize: 25 },
+                grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
+                pointLabels: {
+                  color: '#94a3b8',
+                  font: { family: 'Prompt', size: 12 }
+                }
+              }
+            },
+            plugins: {
+              legend: { display: false }
+            }
+          }
+        });
+      }
+
+      // Render Past Game Logs Table
+      const logs = await gameService.getUserGameLogs(profile?.id);
+      const tbody = document.getElementById('logs-table-body');
+      tbody.innerHTML = '';
+      logs.forEach(log => {
+        const tr = document.createElement('tr');
+        tr.style.borderBottom = '1px solid var(--border-subtle)';
+        
+        const dateStr = log.created_at ? new Date(log.created_at).toLocaleDateString('th-TH') : 'วันนี้';
+        tr.innerHTML = `
+          <td style="padding: 0.9rem 1rem; font-weight: 600; color: #fff;">
+            ${log.career_name || log.career_id}
+          </td>
+          <td style="padding: 0.9rem 1rem;">
+            <span class="badge ${log.total_score >= 80 ? 'badge-emerald' : 'badge-amber'}">
+              ${log.total_score} / 100
+            </span>
+          </td>
+          <td style="padding: 0.9rem 1rem; color: var(--primary-light);">${log.skills_analytical || 0}%</td>
+          <td style="padding: 0.9rem 1rem; color: var(--accent-cyan);">${log.skills_problem_solving || 0}%</td>
+          <td style="padding: 0.9rem 1rem; color: var(--accent-purple);">${log.skills_communication || 0}%</td>
+          <td style="padding: 0.9rem 1rem; color: var(--accent-emerald);">${log.skills_thoroughness || 0}%</td>
+          <td style="padding: 0.9rem 1rem; color: var(--text-dim);">${dateStr}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    });
+  </script>
+</body>
+</html>

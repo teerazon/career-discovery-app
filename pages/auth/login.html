@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>เข้าสู่ระบบ | Career Discovery Platform</title>
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/auth.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container navbar">
+      <a href="../../index.html" class="logo-group">
+        <div class="logo-icon"><i class="fa-solid fa-compass"></i></div>
+        <div class="logo-text">
+          <span>CAREER PATH</span>
+          <span class="logo-sub">Discovery & Minigame</span>
+        </div>
+      </a>
+      <div style="font-size: 0.9rem; color: var(--text-muted);">
+        ยังไม่มีบัญชี? <a href="register.html" style="font-weight: 600;">สมัครสมาชิกฟรี</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="auth-wrapper">
+    <div class="auth-card animate-slide-up">
+      <div class="auth-header">
+        <div style="width: 56px; height: 56px; border-radius: 16px; background: rgba(99, 102, 241, 0.15); color: var(--primary-light); display: flex; align-items: center; justify-content: center; font-size: 1.75rem; margin: 0 auto 1rem;">
+          <i class="fa-solid fa-right-to-bracket"></i>
+        </div>
+        <h1 class="auth-title">ยินดีต้อนรับกลับมา</h1>
+        <p class="auth-subtitle">เข้าสู่ระบบเพื่อดูประวัติการเล่นและพัฒนาการทักษะของคุณ</p>
+      </div>
+
+      <form id="login-form">
+        <div class="form-group">
+          <label class="form-label" for="login-email">อีเมล (Email)</label>
+          <input type="email" id="login-email" class="form-control" placeholder="name@example.com" required value="student@career-discovery.th">
+        </div>
+
+        <div class="form-group">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <label class="form-label" for="login-password" style="margin-bottom: 0;">รหัสผ่าน</label>
+            <a href="#" style="font-size: 0.8rem; color: var(--text-muted);">ลืมรหัสผ่าน?</a>
+          </div>
+          <input type="password" id="login-password" class="form-control" placeholder="กรอกรหัสผ่านของคุณ" required value="demo1234">
+        </div>
+
+        <button type="submit" id="login-submit-btn" class="btn btn-primary btn-block btn-lg" style="margin-top: 1rem;">
+          เข้าสู่ระบบ <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </form>
+
+      <div class="auth-divider">หรือทดลองใช้งานทันที</div>
+
+      <button id="quick-demo-login-btn" class="btn btn-secondary btn-block">
+        <i class="fa-solid fa-wand-magic-sparkles" style="color: var(--accent-cyan);"></i> เข้าสู่ระบบด้วยบัญชี Demo ทันที
+      </button>
+
+      <div style="text-align: center; margin-top: 1.5rem; font-size: 0.85rem; color: var(--text-dim);">
+        ข้อมูลของคุณปลอดภัยด้วย Supabase Authentication Engine
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { authService } from '../../assets/js/services/authService.js';
+    import { showToast } from '../../assets/js/utils/router.js';
+
+    const form = document.getElementById('login-form');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-password').value;
+
+      const btn = document.getElementById('login-submit-btn');
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> กำลังตรวจสอบ...';
+
+      const res = await authService.login(email, password);
+      if (res.success) {
+        showToast('เข้าสู่ระบบสำเร็จ! ยินดีต้อนรับ', 'success');
+        setTimeout(() => {
+          window.location.href = '../profile.html';
+        }, 800);
+      } else {
+        showToast(res.error || 'อีเมลหรือรหัสผ่านไม่ถูกต้อง', 'error');
+        btn.disabled = false;
+        btn.innerHTML = 'เข้าสู่ระบบ <i class="fa-solid fa-arrow-right"></i>';
+      }
+    });
+
+    // Quick demo login
+    document.getElementById('quick-demo-login-btn').addEventListener('click', async () => {
+      const res = await authService.login('student@career-discovery.th', 'demo1234');
+      if (res.success) {
+        showToast('เข้าสู่ระบบในโหมด Demo สำเร็จ!', 'success');
+        setTimeout(() => {
+          window.location.href = '../profile.html';
+        }, 600);
+      }
+    });
+  </script>
+</body>
+</html>

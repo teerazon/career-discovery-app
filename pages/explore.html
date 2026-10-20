@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>สำรวจอาชีพ (Career Search & Filter) | Career Discovery Platform</title>
+  <meta name="description" content="ค้นหาและเปรียบเทียบข้อมูลอาชีพ อัตราเงินเดือน ทักษะที่ต้องใช้ และใบอนุญาตวิชาชีพ">
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <!-- Header & Navbar -->
+  <header class="site-header">
+    <div class="container navbar">
+      <a href="../index.html" class="logo-group">
+        <div class="logo-icon"><i class="fa-solid fa-compass"></i></div>
+        <div class="logo-text">
+          <span>CAREER PATH</span>
+          <span class="logo-sub">Discovery & Minigame</span>
+        </div>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="../index.html" class="nav-link"><i class="fa-solid fa-house"></i> หน้าแรก</a></li>
+        <li><a href="explore.html" class="nav-link active"><i class="fa-solid fa-magnifying-glass"></i> สำรวจอาชีพ</a></li>
+        <li><a href="minigames/index.html" class="nav-link"><i class="fa-solid fa-gamepad"></i> มินิเกมจำลอง (24h)</a></li>
+        <li><a href="guidance/faculties.html" class="nav-link"><i class="fa-solid fa-graduation-cap"></i> คณะและสาขา</a></li>
+        <li><a href="guidance/universities.html" class="nav-link"><i class="fa-solid fa-building-columns"></i> มหาวิทยาลัย</a></li>
+        <li><a href="profile.html" class="nav-link"><i class="fa-solid fa-user-astronaut"></i> โปรไฟล์</a></li>
+      </ul>
+
+      <div class="nav-auth-group">
+        <div id="navbar-auth-section"></div>
+        <button id="mobile-menu-toggle" class="mobile-toggle"><i class="fa-solid fa-bars"></i></button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Page Main Content -->
+  <main style="padding: 3rem 0 5rem;">
+    <div class="container">
+      
+      <!-- Top Header & Search Bar -->
+      <div style="margin-bottom: 2.5rem; text-align: center;">
+        <h1 style="font-size: 2.25rem; margin-bottom: 0.75rem;">คลังข้อมูลและสำรวจอาชีพ (Career Directory)</h1>
+        <p style="color: var(--text-muted); max-width: 650px; margin: 0 auto 2rem;">
+          ค้นหาอาชีพที่ตรงกับตัวตน ตรวจสอบฐานเงินเดือน ความต้องการในตลาดแรงงาน และเส้นทางการศึกษาต่อ
+        </p>
+
+        <!-- Search & Filter Controls -->
+        <div class="card" style="padding: 1.5rem; max-width: 960px; margin: 0 auto; text-align: left;">
+          <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+            <div class="form-group" style="margin-bottom: 0;">
+              <label class="form-label" for="search-input"><i class="fa-solid fa-magnifying-glass"></i> คำค้นหา</label>
+              <input type="text" id="search-input" class="form-control" placeholder="พิมพ์ชื่ออาชีพ หรือทักษะ เช่น วิเคราะห์, เขียนโค้ด, ยา...">
+            </div>
+
+            <div class="form-group" style="margin-bottom: 0;">
+              <label class="form-label" for="category-filter"><i class="fa-solid fa-filter"></i> หมวดหมู่</label>
+              <select id="category-filter" class="form-control form-select">
+                <option value="all">ทุกหมวดหมู่อาชีพ</option>
+                <option value="วิทยาศาสตร์สุขภาพ">วิทยาศาสตร์สุขภาพ</option>
+                <option value="สังคมศาสตร์และกฎหมาย">สังคมศาสตร์และกฎหมาย</option>
+                <option value="การศึกษาและพัฒนามนุษย์">การศึกษาและพัฒนามนุษย์</option>
+                <option value="การเงินและบริหารธุรกิจ">การเงินและบริหารธุรกิจ</option>
+                <option value="เทคโนโลยีและคอมพิวเตอร์">เทคโนโลยีและคอมพิวเตอร์</option>
+                <option value="การออกแบบและสถาปัตยกรรม">การออกแบบและสถาปัตยกรรม</option>
+              </select>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 0;">
+              <label class="form-label" for="minigame-filter"><i class="fa-solid fa-gamepad"></i> มินิเกมจำลอง</label>
+              <select id="minigame-filter" class="form-control form-select">
+                <option value="all">ทั้งหมด</option>
+                <option value="ready">มีมินิเกมให้เล่น</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Result Counter -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <span style="font-weight: 600; color: var(--text-muted);" id="result-count">กำลังแสดงผล 0 อาชีพ</span>
+      </div>
+
+      <!-- Careers Grid -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.75rem;" id="careers-directory-grid">
+        <!-- Generated by JavaScript -->
+      </div>
+    </div>
+  </main>
+
+  <!-- Career Detail Modal -->
+  <div id="career-modal" class="modal-overlay">
+    <div class="modal-content" style="max-width: 650px;">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div id="modal-icon" style="width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem;"></div>
+          <div>
+            <h3 id="modal-title" style="font-size: 1.25rem; margin-bottom: 2px;"></h3>
+            <span id="modal-category" class="badge badge-primary"></span>
+          </div>
+        </div>
+        <button id="modal-close-btn" class="modal-close">&times;</button>
+      </div>
+
+      <div style="margin-bottom: 1.25rem;">
+        <p id="modal-desc" style="color: var(--text-main); line-height: 1.6; margin-bottom: 1.25rem;"></p>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem;">
+          <div style="background: rgba(255,255,255,0.04); padding: 1rem; border-radius: var(--radius-md);">
+            <div style="font-size: 0.78rem; color: var(--text-muted); text-transform: uppercase;">ฐานเงินเดือนเฉลี่ย</div>
+            <div id="modal-salary" style="font-size: 1.05rem; font-weight: 700; color: var(--accent-emerald);"></div>
+          </div>
+          <div style="background: rgba(255,255,255,0.04); padding: 1rem; border-radius: var(--radius-md);">
+            <div style="font-size: 0.78rem; color: var(--text-muted); text-transform: uppercase;">ความต้องการในตลาด</div>
+            <div id="modal-demand" style="font-size: 1.05rem; font-weight: 700; color: var(--accent-cyan);"></div>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 1.25rem;">
+          <h4 style="font-size: 0.95rem; margin-bottom: 0.5rem; color: #fff;">คณะที่เกี่ยวข้อง:</h4>
+          <p id="modal-faculty" style="color: var(--text-muted); font-size: 0.9rem;"></p>
+        </div>
+
+        <div style="margin-bottom: 1.5rem;">
+          <h4 style="font-size: 0.95rem; margin-bottom: 0.5rem; color: #fff;">ใบอนุญาตและข้อกำหนดวิชาชีพ:</h4>
+          <p id="modal-license" style="color: var(--text-muted); font-size: 0.9rem;"></p>
+        </div>
+      </div>
+
+      <div id="modal-actions" style="display: flex; gap: 10px; justify-content: flex-end;">
+        <button id="modal-cancel-btn" class="btn btn-secondary">ปิด</button>
+        <a id="modal-play-link" href="#" class="btn btn-primary">
+          <i class="fa-solid fa-gamepad"></i> เล่นเกมจำลองอาชีพนี้
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script type="module" src="../assets/js/utils/authCheck.js"></script>
+  <script type="module">
+    import { CAREERS_DATA } from '../assets/js/services/dataService.js';
+
+    const grid = document.getElementById('careers-directory-grid');
+    const searchInput = document.getElementById('search-input');
+    const categoryFilter = document.getElementById('category-filter');
+    const minigameFilter = document.getElementById('minigame-filter');
+    const countEl = document.getElementById('result-count');
+
+    // Parse URL query if any
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialQuery = urlParams.get('q');
+    if (initialQuery) {
+      searchInput.value = initialQuery;
+    }
+
+    function renderCareers() {
+      const q = searchInput.value.trim().toLowerCase();
+      const cat = categoryFilter.value;
+      const mg = minigameFilter.value;
+
+      const filtered = CAREERS_DATA.filter(c => {
+        const matchQuery = !q || c.title.toLowerCase().includes(q) || c.description.toLowerCase().includes(q) || c.tags.some(t => t.toLowerCase().includes(q));
+        const matchCat = cat === 'all' || c.category === cat;
+        const matchMg = mg === 'all' || (mg === 'ready' && c.minigame_ready);
+        return matchQuery && matchCat && matchMg;
+      });
+
+      countEl.textContent = `กำลังแสดงผล ${filtered.length} อาชีพ`;
+      grid.innerHTML = '';
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div style="grid-column: 1 / -1; text-align: center; padding: 4rem 1rem;">
+            <i class="fa-solid fa-magnifying-glass" style="font-size: 3rem; color: var(--text-dim); margin-bottom: 1rem;"></i>
+            <h3>ไม่พบข้อมูลอาชีพที่ตรงกับเงื่อนไข</h3>
+            <p style="color: var(--text-muted);">ลองปรับคำค้นหาหรือเปลี่ยนตัวกรองหมวดหมู่</p>
+          </div>
+        `;
+        return;
+      }
+
+      filtered.forEach(c => {
+        const card = document.createElement('div');
+        card.className = 'card card-interactive card-glowing';
+        card.innerHTML = `
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+            <div style="width: 48px; height: 48px; border-radius: 12px; background: rgba(255,255,255,0.06); color: ${c.color}; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
+              <i class="fa-solid ${c.icon}"></i>
+            </div>
+            <span class="badge badge-emerald">${c.salary_range}</span>
+          </div>
+
+          <h3 style="font-size: 1.2rem; margin-bottom: 0.35rem;">${c.title.split('(')[0]}</h3>
+          <div style="font-size: 0.8rem; color: var(--text-dim); margin-bottom: 0.75rem;">${c.category} • ${c.faculty}</div>
+          <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 1.25rem;">
+            ${c.description}
+          </p>
+
+          <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1.5rem;">
+            ${c.tags.map(t => `<span class="badge badge-primary">${t}</span>`).join('')}
+          </div>
+
+          <div style="display: flex; gap: 8px; margin-top: auto;">
+            <button class="btn btn-secondary btn-sm view-detail-btn" style="flex: 1;" data-id="${c.id}">
+              <i class="fa-solid fa-circle-info"></i> รายละเอียด
+            </button>
+            ${c.minigame_ready ? `
+              <a href="${c.minigame_url}" class="btn btn-primary btn-sm" style="flex: 1;">
+                <i class="fa-solid fa-gamepad"></i> เล่นมินิเกม
+              </a>
+            ` : `
+              <button class="btn btn-ghost btn-sm disabled" style="flex: 1; opacity: 0.4;">
+                เร็วๆ นี้
+              </button>
+            `}
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+
+      // Bind detail modal buttons
+      grid.querySelectorAll('.view-detail-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = btn.dataset.id;
+          const career = CAREERS_DATA.find(c => c.id === id);
+          if (career) openModal(career);
+        });
+      });
+    }
+
+    // Modal controls
+    const modal = document.getElementById('career-modal');
+    function openModal(c) {
+      document.getElementById('modal-icon').style.background = `${c.color}25`;
+      document.getElementById('modal-icon').style.color = c.color;
+      document.getElementById('modal-icon').innerHTML = `<i class="fa-solid ${c.icon}"></i>`;
+      document.getElementById('modal-title').textContent = c.title;
+      document.getElementById('modal-category').textContent = c.category;
+      document.getElementById('modal-desc').textContent = c.description;
+      document.getElementById('modal-salary').textContent = c.salary_range;
+      document.getElementById('modal-demand').textContent = c.demand;
+      document.getElementById('modal-faculty').textContent = c.faculty;
+      document.getElementById('modal-license').textContent = c.licenses;
+
+      const playLink = document.getElementById('modal-play-link');
+      if (c.minigame_ready) {
+        playLink.style.display = 'inline-flex';
+        playLink.href = c.minigame_url;
+      } else {
+        playLink.style.display = 'none';
+      }
+
+      modal.classList.add('active');
+    }
+
+    document.getElementById('modal-close-btn').addEventListener('click', () => modal.classList.remove('active'));
+    document.getElementById('modal-cancel-btn').addEventListener('click', () => modal.classList.remove('active'));
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) modal.classList.remove('active');
+    });
+
+    // Event listeners
+    searchInput.addEventListener('input', renderCareers);
+    categoryFilter.addEventListener('change', renderCareers);
+    minigameFilter.addEventListener('change', renderCareers);
+
+    // Initial render
+    renderCareers();
+  </script>
+</body>
+</html>

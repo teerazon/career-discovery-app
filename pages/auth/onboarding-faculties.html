@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Onboarding Step 3: เลือกคณะที่สนใจ | Career Discovery Platform</title>
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/auth.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Confetti CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container navbar">
+      <a href="../../index.html" class="logo-group">
+        <div class="logo-icon"><i class="fa-solid fa-compass"></i></div>
+        <div class="logo-text">
+          <span>CAREER PATH</span>
+          <span class="logo-sub">Discovery & Minigame</span>
+        </div>
+      </a>
+      <div style="font-size: 0.9rem; color: var(--text-muted);">
+        ขั้นตอนที่ 3 จาก 3 (ขั้นตอนสุดท้าย)
+      </div>
+    </div>
+  </header>
+
+  <div class="auth-wrapper">
+    <div class="auth-card auth-card-wide animate-slide-up">
+      <!-- Stepper Indicator -->
+      <div class="stepper-container">
+        <div class="step-item completed">
+          <div class="step-circle"><i class="fa-solid fa-check"></i></div>
+          <span>ข้อมูลทั่วไป</span>
+        </div>
+        <div class="step-line active"></div>
+        <div class="step-item completed">
+          <div class="step-circle"><i class="fa-solid fa-check"></i></div>
+          <span>อาชีพที่สนใจ</span>
+        </div>
+        <div class="step-line active"></div>
+        <div class="step-item active">
+          <div class="step-circle">3</div>
+          <span>คณะที่สนใจ</span>
+        </div>
+      </div>
+
+      <div class="auth-header">
+        <h1 class="auth-title">คณะหรือสาขาวิชาที่คุณสนใจศึกษาต่อ?</h1>
+        <p class="auth-subtitle">ระบบจะเชื่อมโยงหลักสูตร รายวิชา และเกณฑ์คะแนนมหาวิทยาลัยให้แก่คุณ</p>
+      </div>
+
+      <!-- Faculties Multi-select Grid -->
+      <div class="onboarding-grid" id="faculties-grid">
+        <!-- Rendered by JavaScript -->
+      </div>
+
+      <!-- Bottom action bar -->
+      <div class="onboarding-actions">
+        <span style="font-size: 0.9rem; color: var(--text-muted);" id="selection-counter">
+          เลือกแล้ว 0 คณะ
+        </span>
+        <div style="display: flex; gap: 12px;">
+          <button id="finish-btn" class="btn btn-primary btn-lg">
+            <i class="fa-solid fa-sparkles"></i> เสร็จสิ้นการตั้งค่าโปรไฟล์
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ปุ่ม Skip (ข้าม) ที่มุมขวาล่าง ตามที่ Requirement ระบุชัดเจน -->
+  <button id="skip-faculties-btn" class="floating-skip-btn" title="ข้ามขั้นตอนนี้และไปต่อ">
+    <span>ข้ามขั้นตอนนี้ (Skip)</span>
+    <i class="fa-solid fa-forward-step"></i>
+  </button>
+
+  <script type="module">
+    import { authService } from '../../assets/js/services/authService.js';
+    import { FACULTIES_DATA } from '../../assets/js/services/dataService.js';
+    import { showToast } from '../../assets/js/utils/router.js';
+
+    const selectedFaculties = new Set(['pharmacy', 'tech']); // Default pre-select
+
+    const grid = document.getElementById('faculties-grid');
+    const counter = document.getElementById('selection-counter');
+
+    function updateCounter() {
+      counter.textContent = `เลือกแล้ว ${selectedFaculties.size} คณะ`;
+    }
+
+    // Render Faculty Cards
+    FACULTIES_DATA.forEach(fac => {
+      const card = document.createElement('div');
+      const isPreselected = selectedFaculties.has(fac.id);
+      card.className = `select-card ${isPreselected ? 'selected' : ''}`;
+      card.dataset.id = fac.id;
+
+      card.innerHTML = `
+        <div class="select-card-header">
+          <div class="select-card-icon" style="color: ${fac.color};">
+            <i class="fa-solid ${fac.icon}"></i>
+          </div>
+          <div class="select-checkbox">
+            <i class="fa-solid fa-check"></i>
+          </div>
+        </div>
+        <div class="select-card-title">${fac.name}</div>
+        <div class="select-card-desc">${fac.branches.slice(0, 2).join(', ')}</div>
+      `;
+
+      card.addEventListener('click', () => {
+        if (selectedFaculties.has(fac.id)) {
+          selectedFaculties.delete(fac.id);
+          card.classList.remove('selected');
+        } else {
+          selectedFaculties.add(fac.id);
+          card.classList.add('selected');
+        }
+        updateCounter();
+      });
+
+      grid.appendChild(card);
+    });
+
+    updateCounter();
+
+    // Finish button handler
+    document.getElementById('finish-btn').addEventListener('click', async () => {
+      const btn = document.getElementById('finish-btn');
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> กำลังบันทึกโปรไฟล์...';
+
+      await authService.updateFaculties(Array.from(selectedFaculties));
+      
+      // Fire celebration confetti
+      if (window.confetti) {
+        confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+      }
+
+      showToast('ยินดีต้อนรับสู่ Career Discovery Platform!', 'success');
+      setTimeout(() => {
+        window.location.href = '../profile.html';
+      }, 1200);
+    });
+
+    // ปุ่ม Skip ที่มุมขวาล่าง
+    document.getElementById('skip-faculties-btn').addEventListener('click', () => {
+      showToast('ข้ามการเลือกคณะ สามารถกลับมาเพิ่มได้ตลอดเวลาที่หน้าโปรไฟล์', 'info');
+      setTimeout(() => {
+        window.location.href = '../profile.html';
+      }, 500);
+    });
+  </script>
+</body>
+</html>

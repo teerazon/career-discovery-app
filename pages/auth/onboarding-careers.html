@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Onboarding Step 2: เลือกอาชีพที่สนใจ | Career Discovery Platform</title>
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/auth.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container navbar">
+      <a href="../../index.html" class="logo-group">
+        <div class="logo-icon"><i class="fa-solid fa-compass"></i></div>
+        <div class="logo-text">
+          <span>CAREER PATH</span>
+          <span class="logo-sub">Discovery & Minigame</span>
+        </div>
+      </a>
+      <div style="font-size: 0.9rem; color: var(--text-muted);">
+        ขั้นตอนที่ 2 จาก 3
+      </div>
+    </div>
+  </header>
+
+  <div class="auth-wrapper">
+    <div class="auth-card auth-card-wide animate-slide-up">
+      <!-- Stepper Indicator -->
+      <div class="stepper-container">
+        <div class="step-item completed">
+          <div class="step-circle"><i class="fa-solid fa-check"></i></div>
+          <span>ข้อมูลทั่วไป</span>
+        </div>
+        <div class="step-line active"></div>
+        <div class="step-item active">
+          <div class="step-circle">2</div>
+          <span>อาชีพที่สนใจ</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step-item">
+          <div class="step-circle">3</div>
+          <span>คณะที่สนใจ</span>
+        </div>
+      </div>
+
+      <div class="auth-header">
+        <h1 class="auth-title">อาชีพใดที่คุณสนใจหรืออยากค้นหา?</h1>
+        <p class="auth-subtitle">สามารถเลือกได้หลายตัวเลือก เพื่อให้ระบบแนะนำเกมจำลองและเส้นทางการเรียนที่ตรงใจคุณ</p>
+      </div>
+
+      <!-- Career Multi-select Grid -->
+      <div class="onboarding-grid" id="careers-grid">
+        <!-- Rendered by JavaScript -->
+      </div>
+
+      <!-- Bottom action bar -->
+      <div class="onboarding-actions">
+        <span style="font-size: 0.9rem; color: var(--text-muted);" id="selection-counter">
+          เลือกแล้ว 0 อาชีพ
+        </span>
+        <div style="display: flex; gap: 12px;">
+          <button id="next-step-btn" class="btn btn-primary btn-lg">
+            ถัดไป: เลือกคณะที่สนใจ (Step 3) <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ปุ่ม Skip (ข้าม) ที่มุมขวาล่าง ตามที่ Requirement ระบุชัดเจน -->
+  <button id="skip-careers-btn" class="floating-skip-btn" title="ข้ามขั้นตอนนี้และไปต่อ">
+    <span>ข้ามขั้นตอนนี้ (Skip)</span>
+    <i class="fa-solid fa-forward-step"></i>
+  </button>
+
+  <script type="module">
+    import { authService } from '../../assets/js/services/authService.js';
+    import { CAREERS_DATA } from '../../assets/js/services/dataService.js';
+    import { showToast } from '../../assets/js/utils/router.js';
+
+    const selectedCareers = new Set(['pharmacist', 'programmer']); // Default pre-select 2 popular careers
+
+    const grid = document.getElementById('careers-grid');
+    const counter = document.getElementById('selection-counter');
+
+    function updateCounter() {
+      counter.textContent = `เลือกแล้ว ${selectedCareers.size} อาชีพ`;
+    }
+
+    // Render Career Cards
+    CAREERS_DATA.forEach(career => {
+      const card = document.createElement('div');
+      const isPreselected = selectedCareers.has(career.id);
+      card.className = `select-card ${isPreselected ? 'selected' : ''}`;
+      card.dataset.id = career.id;
+
+      card.innerHTML = `
+        <div class="select-card-header">
+          <div class="select-card-icon" style="color: ${career.color};">
+            <i class="fa-solid ${career.icon}"></i>
+          </div>
+          <div class="select-checkbox">
+            <i class="fa-solid fa-check"></i>
+          </div>
+        </div>
+        <div class="select-card-title">${career.title.split('(')[0]}</div>
+        <div class="select-card-desc">${career.category} • ฐานเงินเดือน ${career.salary_range}</div>
+      `;
+
+      card.addEventListener('click', () => {
+        if (selectedCareers.has(career.id)) {
+          selectedCareers.delete(career.id);
+          card.classList.remove('selected');
+        } else {
+          selectedCareers.add(career.id);
+          card.classList.add('selected');
+        }
+        updateCounter();
+      });
+
+      grid.appendChild(card);
+    });
+
+    updateCounter();
+
+    // Next button
+    document.getElementById('next-step-btn').addEventListener('click', async () => {
+      const nextBtn = document.getElementById('next-step-btn');
+      nextBtn.disabled = true;
+      nextBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> กำลังบันทึก...';
+
+      await authService.updateCareers(Array.from(selectedCareers));
+      showToast('บันทึกความสนใจอาชีพเรียบร้อย!', 'success');
+      setTimeout(() => {
+        window.location.href = 'onboarding-faculties.html';
+      }, 700);
+    });
+
+    // ปุ่ม Skip ที่มุมขวาล่าง
+    document.getElementById('skip-careers-btn').addEventListener('click', () => {
+      showToast('ข้ามการเลือกอาชีพ สามารถกลับมาแก้ไขได้ในหน้าโปรไฟล์', 'info');
+      setTimeout(() => {
+        window.location.href = 'onboarding-faculties.html';
+      }, 500);
+    });
+  </script>
+</body>
+</html>

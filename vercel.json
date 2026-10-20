@@ -4,26 +4,22 @@
   "cleanUrls": false,
   "trailingSlash": false,
   "rewrites": [
-    { "source": "/career-discovery-app/assets/(.*)", "destination": "/career-discovery-app/assets/$1" },
-    { "source": "/career-discovery-app/pages/(.*)", "destination": "/career-discovery-app/pages/$1" },
-    { "source": "/career-discovery-app/(.*)", "destination": "/career-discovery-app/$1" },
-    { "source": "/assets/(.*)", "destination": "/career-discovery-app/assets/$1" },
-    { "source": "/pages/(.*)", "destination": "/career-discovery-app/pages/$1" },
-    { "source": "/explore", "destination": "/career-discovery-app/pages/explore.html" },
-    { "source": "/minigames", "destination": "/career-discovery-app/pages/minigames/index.html" },
-    { "source": "/minigames/pharmacist", "destination": "/career-discovery-app/pages/minigames/pharmacist.html" },
-    { "source": "/minigames/lawyer", "destination": "/career-discovery-app/pages/minigames/lawyer.html" },
-    { "source": "/minigames/teacher", "destination": "/career-discovery-app/pages/minigames/teacher.html" },
-    { "source": "/minigames/accountant", "destination": "/career-discovery-app/pages/minigames/accountant.html" },
-    { "source": "/minigames/programmer", "destination": "/career-discovery-app/pages/minigames/programmer.html" },
-    { "source": "/profile", "destination": "/career-discovery-app/pages/profile.html" },
-    { "source": "/score-summary", "destination": "/career-discovery-app/pages/score-summary.html" },
-    { "source": "/faculties", "destination": "/career-discovery-app/pages/guidance/faculties.html" },
-    { "source": "/universities", "destination": "/career-discovery-app/pages/guidance/universities.html" },
-    { "source": "/login", "destination": "/career-discovery-app/pages/auth/login.html" },
-    { "source": "/register", "destination": "/career-discovery-app/pages/auth/register.html" },
-    { "source": "/", "destination": "/career-discovery-app/index.html" },
-    { "source": "/index.html", "destination": "/career-discovery-app/index.html" }
+    { "source": "/explore", "destination": "/pages/explore.html" },
+    { "source": "/minigames", "destination": "/pages/minigames/index.html" },
+    { "source": "/minigames/pharmacist", "destination": "/pages/minigames/pharmacist.html" },
+    { "source": "/minigames/lawyer", "destination": "/pages/minigames/lawyer.html" },
+    { "source": "/minigames/teacher", "destination": "/pages/minigames/teacher.html" },
+    { "source": "/minigames/accountant", "destination": "/pages/minigames/accountant.html" },
+    { "source": "/minigames/programmer", "destination": "/pages/minigames/programmer.html" },
+    { "source": "/profile", "destination": "/pages/profile.html" },
+    { "source": "/score-summary", "destination": "/pages/score-summary.html" },
+    { "source": "/faculties", "destination": "/pages/guidance/faculties.html" },
+    { "source": "/universities", "destination": "/pages/guidance/universities.html" },
+    { "source": "/login", "destination": "/pages/auth/login.html" },
+    { "source": "/register", "destination": "/pages/auth/register.html" },
+    { "source": "/career-discovery-app/assets/(.*)", "destination": "/assets/$1" },
+    { "source": "/career-discovery-app/pages/(.*)", "destination": "/pages/$1" },
+    { "source": "/career-discovery-app/(.*)", "destination": "/$1" }
   ],
   "headers": [
     {
@@ -36,7 +32,7 @@
       ]
     },
     {
-      "source": "/(.*)/assets/(.*)",
+      "source": "/assets/(.*)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
       ]

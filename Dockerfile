@@ -8,7 +8,7 @@ RUN rm -rf /usr/share/nginx/html/*
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Copy application static files
-COPY career-discovery-app/ /usr/share/nginx/html/
+COPY . /usr/share/nginx/html/
 
 # Expose HTTP port
 EXPOSE 80

@@ -1,5 +1,5 @@
 [build]
-  publish = "career-discovery-app"
+  publish = "."
 
 [[headers]]
   for = "/*"
@@ -14,7 +14,6 @@
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
-# Clean vanity redirects
 [[redirects]]
   from = "/explore"
   to = "/pages/explore.html"
